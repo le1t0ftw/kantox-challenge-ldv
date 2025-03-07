@@ -23,7 +23,7 @@ jobs:
         with:
           filters: 
           api:
-            - 'servicios/api/**'
+          - 'servicios/api/**'
       
       - name: Configure AWS credentials
         if: steps.changes.outputs.api == 'true'
