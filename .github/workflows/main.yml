@@ -54,13 +54,15 @@ jobs:
           SHORT_SHA=${GITHUB_SHA::7}
           sed -i "s|image:.*|image: 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./kubernetes/main-api-deployment.yaml
 
-      - name: Commit changes to deployment file
+      - name: Commit and push changes
         if: steps.changes.outputs.api == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add ./kubernetes/main-api-deployment.yaml
-          git commit -m "Update main-api image version to $SHORT_SHA"
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add -A
+          git commit -m "DEPLOY-[main-api:$SHORT_SHA] - new deployment generated"
           git push
 
   build-auxiliary-service:
@@ -107,11 +109,13 @@ jobs:
           SHORT_SHA=${GITHUB_SHA::7}
           sed -i "s|image:.*|image: 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/auxiliary-service-deployment.yaml
 
-      - name: Commit changes to deployment file
+      - name: Commit and push changes
         if: steps.changes.outputs.aux == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PIPELINE_TOKEN }}
         run: |
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add ./kubernetes/auxiliary-service-deployment.yaml
-          git commit -m "Update auxiliary-service image version to $SHORT_SHA"
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add -A
+          git commit -m "DEPLOY-[auxiliary-service:$SHORT_SHA] - new deployment generated"
           git push
