@@ -6,8 +6,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: "https://github.com/tu-usuario/tu-repo-k8s"
-    path: k8s/base
+    repoURL: "git@github.com:le1t0ftw/kantox-challenge-ldv.git"
+    path: kubernetes
     targetRevision: main
   destination:
     server: "https://kubernetes.default.svc"

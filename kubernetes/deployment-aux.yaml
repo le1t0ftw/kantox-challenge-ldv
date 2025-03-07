@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auxiliary-service
+  namespace: microservices
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: auxiliary-service
+  template:
+    metadata:
+      labels:
+        app: auxiliary-service
+    spec:
+      containers:
+      - name: auxiliary-service
+        image: le1t0ftw/aux:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: app-config
