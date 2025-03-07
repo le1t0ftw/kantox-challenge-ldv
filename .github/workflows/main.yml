@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Configurar AWS OIDC
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: us-east-1
+
+    - name: Iniciar sesión en ECR
+      run: |
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423394741.dkr.ecr.us-east-1.amazonaws.com
+
+    - name: Construir y publicar imágenes
+      run: |
+        docker build -t main-api:latest ./main_api
+        docker build -t auxiliary-service:latest ./auxiliary_service
+
+        docker tag main-api:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:latest
+        docker tag auxiliary-service:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:latest
+
+        docker push 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:latest
+        docker push 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:latest
