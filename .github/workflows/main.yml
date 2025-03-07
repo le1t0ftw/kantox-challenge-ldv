@@ -14,68 +14,68 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout código
-      uses: actions/checkout@v4
+      - name: Checkout código
+        uses: actions/checkout@v4
 
-    - name: Check for changes in main-api
-      id: changes
-      uses: dorny/paths-filter@v2
-      with:
-        filters: 
-          api:
-            - 'servicios/api/**'
-    
-    - name: Configure AWS credentials
-      if: steps.changes.outputs.api == 'true'
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+      - name: Check for changes in main-api
+        id: changes
+        uses: dorny/paths-filter@v2
+        with:
+          filters: 
+            api:
+              - 'servicios/api/**'
+      
+      - name: Configure AWS credentials
+        if: steps.changes.outputs.api == 'true'
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-    - name: Iniciar sesión en ECR
-      if: steps.changes.outputs.api == 'true'
-      run: |
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423394741.dkr.ecr.us-east-1.amazonaws.com
+      - name: Iniciar sesión en ECR
+        if: steps.changes.outputs.api == 'true'
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423394741.dkr.ecr.us-east-1.amazonaws.com
 
-    - name: Construir y publicar imagen de main-api
-      if: steps.changes.outputs.api == 'true'
-      run: |
-        docker build -t main-api:latest ./servicios/api
-        docker tag main-api:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:latest
-        docker push 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:latest
+      - name: Construir y publicar imagen de main-api
+        if: steps.changes.outputs.api == 'true'
+        run: |
+          docker build -t main-api:latest ./servicios/api
+          docker tag main-api:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:latest
+          docker push 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:latest
 
   build-auxiliary-service:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout código
-      uses: actions/checkout@v4
+      - name: Checkout código
+        uses: actions/checkout@v4
 
-    - name: Check for changes in auxiliary-service
-      id: changes
-      uses: dorny/paths-filter@v2
-      with:
-        filters: 
-          aux:
-            - 'servicios/aux/**'
-    
-    - name: Configure AWS credentials
-      if: steps.changes.outputs.aux == 'true'
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+      - name: Check for changes in auxiliary-service
+        id: changes
+        uses: dorny/paths-filter@v2
+        with:
+          filters: 
+            aux:
+              - 'servicios/aux/**'
+      
+      - name: Configure AWS credentials
+        if: steps.changes.outputs.aux == 'true'
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-    - name: Iniciar sesión en ECR
-      if: steps.changes.outputs.aux == 'true'
-      run: |
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423394741.dkr.ecr.us-east-1.amazonaws.com
+      - name: Iniciar sesión en ECR
+        if: steps.changes.outputs.aux == 'true'
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423394741.dkr.ecr.us-east-1.amazonaws.com
 
-    - name: Construir y publicar imagen de auxiliary-service
-      if: steps.changes.outputs.aux == 'true'
-      run: |
-        docker build -t auxiliary-service:latest ./servicios/aux
-        docker tag auxiliary-service:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:latest
-        docker push 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:latest
+      - name: Construir y publicar imagen de auxiliary-service
+        if: steps.changes.outputs.aux == 'true'
+        run: |
+          docker build -t auxiliary-service:latest ./servicios/aux
+          docker tag auxiliary-service:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:latest
+          docker push 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:latest
