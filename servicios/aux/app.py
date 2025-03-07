@@ -14,7 +14,6 @@ ssm_client = session.client("ssm")
 # Obtener versión del servicio
 SERVICE_VERSION = os.getenv("SERVICE_VERSION", "1.0.0")
 
-# ESTO ES UN COMENTARIO #
 
 @app.get("/buckets")
 def list_buckets():
