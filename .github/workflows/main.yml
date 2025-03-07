@@ -56,8 +56,7 @@ jobs:
         uses: dorny/paths-filter@v2
         with:
           filters: 
-          aux:
-            - 'servicios/aux/**'
+          aux: 'servicios/aux/**'
       
       - name: Configure AWS credentials
         if: steps.changes.outputs.aux == 'true'
