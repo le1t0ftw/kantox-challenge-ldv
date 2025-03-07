@@ -1,40 +1,17 @@
-resource "aws_iam_role" "app_role" {
-  name = "app-role"
+resource "aws_iam_role" "this_role" {
+  name = var.role_name
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow"
-      Principal = {
-        Service = "ecs-tasks.amazonaws.com"
-      }
-      Action = "sts:AssumeRole"
-    }]
-  })
+  assume_role_policy = var.assume_role_policy
 }
 
-resource "aws_iam_policy" "app_policy" {
-  name        = "app-policy"
-  description = "Policy for accessing S3 and Parameter Store"
+resource "aws_iam_policy" "this_policy" {
+  name        = var.policy_name
+  description = "Policy for accessing resources"
   
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = ["s3:ListBucket"]
-        Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = ["ssm:GetParameter"]
-        Resource = "*"
-      }
-    ]
-  })
+  policy = var.policy_document
 }
 
-resource "aws_iam_role_policy_attachment" "app_attach" {
-  role       = aws_iam_role.app_role.name
-  policy_arn = aws_iam_policy.app_policy.arn
+resource "aws_iam_role_policy_attachment" "this_attach" {
+  role       = aws_iam_role.this_role.name
+  policy_arn = aws_iam_policy.this_policy.arn
 }

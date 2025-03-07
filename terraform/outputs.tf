@@ -10,5 +10,5 @@ output "parameter_name" {
 
 output "iam_role" {
   description = "ARN del rol IAM"
-  value       = module.iam.iam_role_arn
+  value       = module.app_role.iam_role_arn
 }

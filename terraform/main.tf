@@ -9,6 +9,27 @@ module "parameter_store" {
   param_value = var.param_value
 }
 
-module "iam" {
+module "app_role" {
   source = "./modules/iam"
+
+  role_name          = var.app_iam_config["role_name"]
+  policy_name        = var.app_iam_config["policy_name"]
+  assume_role_policy = file("./policy_files/app-assume-role.json")
+  policy_document    = file("./policy_files/app-policy.json")
+}
+
+module "github_role" {
+  source = "./modules/iam"
+
+  role_name          = var.git_iam_config["role_name"]
+  policy_name        = var.git_iam_config["policy_name"]
+  assume_role_policy = file("./policy_files/app-assume-role.json")
+  policy_document    = file("./policy_files/app-policy.json")
+}
+
+
+module "ecr" {
+  source             = "./modules/ecr"
+  repository_name    = var.repository_name
+  image_tag_mutability = var.image_tag_mutability
 }
