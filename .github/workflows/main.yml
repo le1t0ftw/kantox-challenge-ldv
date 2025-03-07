@@ -22,7 +22,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1  # Cambia a tu región de AWS
+        aws-region: us-east-1
 
     - name: Iniciar sesión en ECR
       run: |
@@ -30,8 +30,8 @@ jobs:
 
     - name: Construir y publicar imágenes
       run: |
-        docker build -t main-api:latest ./main_api
-        docker build -t auxiliary-service:latest ./auxiliary_service
+        docker build -t main-api:latest ./servicios/api
+        docker build -t auxiliary-service:latest ./servicios/aux
 
         docker tag main-api:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:latest
         docker tag auxiliary-service:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:latest
