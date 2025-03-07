@@ -21,8 +21,9 @@ jobs:
         id: changes
         uses: dorny/paths-filter@v2
         with:
-          filters: 
-          api: 'servicios/api/**'
+          filters: | 
+            api: 
+              -'servicios/api/**'
       
       - name: Configure AWS credentials
         if: steps.changes.outputs.api == 'true'
@@ -55,8 +56,9 @@ jobs:
         id: changes
         uses: dorny/paths-filter@v2
         with:
-          filters: 
-          aux: 'servicios/aux/**'
+          filters: |
+            aux: 
+              -'servicios/aux/**'
       
       - name: Configure AWS credentials
         if: steps.changes.outputs.aux == 'true'
