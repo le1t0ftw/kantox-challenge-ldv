@@ -10,8 +10,9 @@ permissions:
   contents: read
 
 jobs:
-  build-and-deploy:
+  build-main-api:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ' '), 'servicios/api/') }}
 
     steps:
     - name: Checkout código
@@ -28,13 +29,33 @@ jobs:
       run: |
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423394741.dkr.ecr.us-east-1.amazonaws.com
 
-    - name: Construir y publicar imágenes
+    - name: Construir y publicar imagen de main-api
       run: |
         docker build -t main-api:latest ./servicios/api
-        docker build -t auxiliary-service:latest ./servicios/aux
-
         docker tag main-api:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:latest
-        docker tag auxiliary-service:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:latest
-
         docker push 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:latest
+
+  build-auxiliary-service:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ' '), 'servicios/aux/') }}
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Iniciar sesión en ECR
+      run: |
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423394741.dkr.ecr.us-east-1.amazonaws.com
+
+    - name: Construir y publicar imagen de auxiliary-service
+      run: |
+        docker build -t auxiliary-service:latest ./servicios/aux
+        docker tag auxiliary-service:latest 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:latest
         docker push 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:latest
