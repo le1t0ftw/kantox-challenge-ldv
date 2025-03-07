@@ -52,14 +52,14 @@ jobs:
         if: steps.changes.outputs.api == 'true'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          sed -i "s|image:.*|image: 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./deployments/main-api-deployment.yaml
+          sed -i "s|image:.*|image: 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./kubernetes/main-api-deployment.yaml
 
       - name: Commit changes to deployment file
         if: steps.changes.outputs.api == 'true'
         run: |
           git config --local user.name "GitHub Actions"
           git config --local user.email "actions@github.com"
-          git add ./deployments/main-api-deployment.yaml
+          git add ./kubernetes/main-api-deployment.yaml
           git commit -m "Update main-api image version to $SHORT_SHA"
           git push
 
@@ -105,13 +105,13 @@ jobs:
         if: steps.changes.outputs.aux == 'true'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          sed -i "s|image:.*|image: 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./deployments/auxiliary-service-deployment.yaml
+          sed -i "s|image:.*|image: 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/auxiliary-service-deployment.yaml
 
       - name: Commit changes to deployment file
         if: steps.changes.outputs.aux == 'true'
         run: |
           git config --local user.name "GitHub Actions"
           git config --local user.email "actions@github.com"
-          git add ./deployments/auxiliary-service-deployment.yaml
+          git add ./kubernetes/auxiliary-service-deployment.yaml
           git commit -m "Update auxiliary-service image version to $SHORT_SHA"
           git push
