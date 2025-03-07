@@ -14,14 +14,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Check for changes in main-api
         id: changes
         uses: dorny/paths-filter@v2
         with:
-          filters: |
+          filters: 
             api:
               - 'servicios/api/**'
       
@@ -33,12 +33,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Iniciar sesión en ECR
+      - name: Log in to ECR
         if: steps.changes.outputs.api == 'true'
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423394741.dkr.ecr.us-east-1.amazonaws.com
 
-      - name: Construir y publicar imagen de main-api
+      - name: Build and push main-api image
         if: steps.changes.outputs.api == 'true'
         env:
           SHORT_SHA: ${{ github.sha }}
@@ -48,18 +48,33 @@ jobs:
           docker tag main-api:$SHORT_SHA 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA
           docker push 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA
 
+      - name: Update deployment file
+        if: steps.changes.outputs.api == 'true'
+        run: |
+          SHORT_SHA=${GITHUB_SHA::7}
+          sed -i "s|image:.*|image: 637423394741.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./deployments/main-api-deployment.yaml
+
+      - name: Commit changes to deployment file
+        if: steps.changes.outputs.api == 'true'
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add ./deployments/main-api-deployment.yaml
+          git commit -m "Update main-api image version to $SHORT_SHA"
+          git push
+
   build-auxiliary-service:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Check for changes in auxiliary-service
         id: changes
         uses: dorny/paths-filter@v2
         with:
-          filters: |
+          filters: 
             aux:
               - 'servicios/aux/**'
       
@@ -71,12 +86,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Iniciar sesión en ECR
+      - name: Log in to ECR
         if: steps.changes.outputs.aux == 'true'
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423394741.dkr.ecr.us-east-1.amazonaws.com
 
-      - name: Construir y publicar imagen de auxiliary-service
+      - name: Build and push auxiliary-service image
         if: steps.changes.outputs.aux == 'true'
         env:
           SHORT_SHA: ${{ github.sha }}
@@ -85,3 +100,18 @@ jobs:
           docker build -t auxiliary-service:$SHORT_SHA ./servicios/aux
           docker tag auxiliary-service:$SHORT_SHA 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA
           docker push 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA
+
+      - name: Update deployment file
+        if: steps.changes.outputs.aux == 'true'
+        run: |
+          SHORT_SHA=${GITHUB_SHA::7}
+          sed -i "s|image:.*|image: 637423394741.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./deployments/auxiliary-service-deployment.yaml
+
+      - name: Commit changes to deployment file
+        if: steps.changes.outputs.aux == 'true'
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add ./deployments/auxiliary-service-deployment.yaml
+          git commit -m "Update auxiliary-service image version to $SHORT_SHA"
+          git push
