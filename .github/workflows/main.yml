@@ -21,7 +21,7 @@ jobs:
         id: changes
         uses: dorny/paths-filter@v2
         with:
-          filters: 
+          filters: |
             api:
               - 'servicios/api/**'
       
@@ -74,7 +74,7 @@ jobs:
         id: changes
         uses: dorny/paths-filter@v2
         with:
-          filters: 
+          filters: |
             aux:
               - 'servicios/aux/**'
       
