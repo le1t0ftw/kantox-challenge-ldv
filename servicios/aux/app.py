@@ -4,8 +4,10 @@ import os
 
 app = FastAPI()
 
-# Configurar cliente de AWS
-session = boto3.Session()
+# Configurar cliente de AWS con una región específica
+# Puedes cambiar 'us-east-1' por la región que necesites
+region_name = os.getenv("AWS_REGION", "us-east-1")  # También puedes utilizar una variable de entorno
+session = boto3.Session(region_name=region_name)
 s3_client = session.client("s3")
 ssm_client = session.client("ssm")
 

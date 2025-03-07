@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: auxiliary-service
-        image: le1t0ftw/aux:latest
+        image: le1t0ftw/aux:1.1
         ports:
         - containerPort: 8000
         envFrom:
