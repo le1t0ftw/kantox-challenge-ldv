@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: auxiliary-service
-  namespace: microservices
+  namespace: auxiliary-service
 spec:
   selector:
     app: auxiliary-service
