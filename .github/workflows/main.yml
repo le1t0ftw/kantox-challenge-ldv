@@ -98,9 +98,9 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git pull origin main --rebase
           git add -A
-          git commit -m "DEPLOY-[main-api:$SHORT_SHA] - new deployment generated"
+          git commit -m "DEPLOY-[auxiliary-service:$SHORT_SHA] - new deployment generated"
+          git pull origin main --rebase
           git push https://x-access-token:${PAT_TOKEN}@github.com/le1t0ftw/kantox-challenge-ldv.git -q
 
   lint-docker-auxiliary-service:
@@ -173,7 +173,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git pull origin main --rebase
           git add -A
           git commit -m "DEPLOY-[auxiliary-service:$SHORT_SHA] - new deployment generated"
+          git pull origin main --rebase
           git push https://x-access-token:${PAT_TOKEN}@github.com/le1t0ftw/kantox-challenge-ldv.git -q
