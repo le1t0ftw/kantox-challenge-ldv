@@ -99,7 +99,6 @@ jobs:
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
 
       - name: Ensure ECR repository exists
-        if: steps.changes.outputs.aux == 'true'
         id: ensure-repo
         run: |
           aws ecr describe-repositories --repository-names auxiliary-service --region us-east-1 || \
