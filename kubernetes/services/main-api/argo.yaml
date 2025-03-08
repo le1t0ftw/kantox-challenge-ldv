@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: "git@github.com:le1t0ftw/kantox-challenge-ldv.git"
     targetRevision: main
-    path: kubernetes/main-api
+    path: kubernetes/services/main-api
   destination:
     server: https://kubernetes.default.svc
     namespace: main-api-namespace

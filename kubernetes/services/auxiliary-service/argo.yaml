@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: "git@github.com:le1t0ftw/kantox-challenge-ldv.git"
     targetRevision: main
-    path: kubernetes/auxiliary-service
+    path: kubernetes/services/auxiliary-service
   destination:
     server: https://kubernetes.default.svc
     namespace: auxiliary-namespace
