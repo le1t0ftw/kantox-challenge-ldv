@@ -23,3 +23,11 @@ spec:
         envFrom:
         - configMapRef:
             name: app-config
+        volumeMounts:
+        - name: aws-credentials
+          mountPath: /root/.aws
+          readOnly: true
+      volumes:
+      - name: aws-credentials
+        hostPath:
+          path: ~/.aws

@@ -9,7 +9,6 @@ session = boto3.Session(region_name=region_name)
 s3_client = session.client("s3")
 ssm_client = session.client("ssm")
 
-# Obtener versión del servicio
 SERVICE_VERSION = os.getenv("SERVICE_VERSION", "1.0.0")
 
 
