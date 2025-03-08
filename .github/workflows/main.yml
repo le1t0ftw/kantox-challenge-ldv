@@ -9,8 +9,32 @@ permissions:
   contents: write
 
 jobs:
+  validate-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13.2'
+      - name: Install dependencies
+        run: |
+          pip install flake8 pytest
+
+      - name: Lint with flake8
+        run: |
+          flake8 servicios
+
+      - name: Run tests with pytest
+        run: |
+          pytest servicios
+
   build-main-api:
     runs-on: ubuntu-latest
+    needs: validate-code
 
     steps:
       - name: Checkout code
@@ -72,6 +96,7 @@ jobs:
 
   build-auxiliary-service:
     runs-on: ubuntu-latest
+    needs: validate-code
 
     steps:
       - name: Checkout code
