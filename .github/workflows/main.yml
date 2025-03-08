@@ -26,7 +26,7 @@ jobs:
 
       - name: Lint with flake8
         run: |
-          flake8 servicios
+          flake8 services-code
 
   lint-docker-main-api:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
 
       - name: Lint Dockerfile for main-api
         run: |
-          docker run --rm -i hadolint/hadolint < ./servicios/api/Dockerfile
+          docker run --rm -i hadolint/hadolint < ./services-code/api/Dockerfile
 
   build-main-api:
     runs-on: ubuntu-latest
@@ -54,8 +54,8 @@ jobs:
         with:
           filters: |
             api:
-              - 'servicios/api/**'
-      
+              - 'services-code/api/**'
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -80,7 +80,7 @@ jobs:
           SHORT_SHA: ${{ github.sha }}
         run: |
           SHORT_SHA=${SHORT_SHA::7}
-          docker build -t main-api:$SHORT_SHA ./servicios/api
+          docker build -t main-api:$SHORT_SHA ./services-code/api
           docker tag main-api:$SHORT_SHA ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA
         continue-on-error: false
@@ -89,7 +89,7 @@ jobs:
         if: steps.changes.outputs.api == 'true' || env.REPO_CREATED == 'true'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./kubernetes/servicios/main-api/main-api-deployment.yaml
+          sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./kubernetes/services/main-api/main-api-deployment.yaml
 
       - name: Commit and push changes
         if: steps.changes.outputs.api == 'true' || env.REPO_CREATED == 'true'
@@ -113,7 +113,7 @@ jobs:
 
       - name: Lint Dockerfile for auxiliary-service
         run: |
-          docker run --rm -i hadolint/hadolint < ./servicios/aux/Dockerfile
+          docker run --rm -i hadolint/hadolint < ./services-code/aux/Dockerfile
 
   build-auxiliary-service:
     runs-on: ubuntu-latest
@@ -129,8 +129,8 @@ jobs:
         with:
           filters: |
             aux:
-              - 'servicios/aux/**'
-      
+              - 'services-code/aux/**'
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -155,7 +155,7 @@ jobs:
           SHORT_SHA: ${{ github.sha }}
         run: |
           SHORT_SHA=${SHORT_SHA::7}
-          docker build -t auxiliary-service:$SHORT_SHA ./servicios/aux
+          docker build -t auxiliary-service:$SHORT_SHA ./services-code/aux
           docker tag auxiliary-service:$SHORT_SHA ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA
         continue-on-error: false
@@ -164,7 +164,7 @@ jobs:
         if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/servicios/auxiliary-service/auxiliary-service-deployment.yaml
+          sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/services/auxiliary-service/auxiliary-service-deployment.yaml
 
       - name: Commit and push changes
         if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
