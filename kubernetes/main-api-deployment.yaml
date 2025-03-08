@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: main-api
-        image: le1t0ftw/api:latest
+        image: 211125350155.dkr.ecr.us-east-1.amazonaws.com/main-api:9c2607d
         ports:
         - containerPort: 8000
         envFrom:
