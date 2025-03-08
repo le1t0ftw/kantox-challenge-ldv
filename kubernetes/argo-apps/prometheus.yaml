@@ -36,7 +36,7 @@ spec:
     project: default  
     source:
       repoURL: https://github.com/prometheus-community/helm-charts.git
-      path: charts/kube-prometheus-stack/crds/
+      path: prometheus-operator-crds
       targetRevision: 18.0.1
     syncPolicy:
       automated:
