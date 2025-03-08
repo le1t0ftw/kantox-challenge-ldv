@@ -1,18 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: main-api
+  name: monitoring
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: "git@github.com:le1t0ftw/kantox-challenge-ldv.git"
     targetRevision: main
-    path: kubernetes/services/main-api
+    path: kubernetes/monitoring
   destination:
     server: https://kubernetes.default.svc
-    namespace: main-api-namespace
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

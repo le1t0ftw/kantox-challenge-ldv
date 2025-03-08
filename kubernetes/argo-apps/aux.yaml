@@ -11,8 +11,9 @@ spec:
     path: kubernetes/services/auxiliary-service
   destination:
     server: https://kubernetes.default.svc
-    namespace: auxiliary-namespace
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
