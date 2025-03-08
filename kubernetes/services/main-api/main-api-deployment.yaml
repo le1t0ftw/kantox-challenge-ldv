@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: main-api
-  namespace: microservices
+  namespace: main-api
 spec:
   imagePullSecrets:
     - name: ecr-registry
