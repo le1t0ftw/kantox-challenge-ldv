@@ -27,4 +27,3 @@ def get_parameter(name: str):
     """Consulta el Auxiliary Service para obtener un parámetro específico."""
     response = requests.get(f"{AUX_SERVICE_URL}/parameter/{name}")
     return response.json() | {"main_api_version": SERVICE_VERSION}
-    
