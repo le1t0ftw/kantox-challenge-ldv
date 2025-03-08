@@ -89,7 +89,7 @@ jobs:
         if: steps.changes.outputs.api == 'true' || env.REPO_CREATED == 'true'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./kubernetes/main-api-deployment.yaml
+          sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./kubernetes/servicios/main-api/main-api-deployment.yaml
 
       - name: Commit and push changes
         if: steps.changes.outputs.api == 'true' || env.REPO_CREATED == 'true'
@@ -164,7 +164,7 @@ jobs:
         if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/auxiliary-service-deployment.yaml
+          sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/servicios/auxiliary-service/auxiliary-service-deployment.yaml
 
       - name: Commit and push changes
         if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
