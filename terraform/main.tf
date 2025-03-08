@@ -17,15 +17,3 @@ module "app_role" {
   assume_role_policy = file("./policy_files/app-assume-role.json")
   policy_document    = file("./policy_files/app-policy.json")
 }
-
-module "api_ecr" {
-  source             = "./modules/ecr"
-  repository_name    = var.api_repository_name
-  image_tag_mutability = var.api_image_tag_mutability
-}
-
-module "aux_ecr" {
-  source             = "./modules/ecr"
-  repository_name    = var.aux_repository_name
-  image_tag_mutability = var.aux_image_tag_mutability
-}

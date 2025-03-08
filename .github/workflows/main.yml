@@ -35,7 +35,7 @@ jobs:
       - name: Log in to ECR
         if: steps.changes.outputs.api == 'true'
         run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 211125350155.dkr.ecr.us-east-1.amazonaws.com
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
 
       - name: Check if main-api image exists in ECR
         if: steps.changes.outputs.api == 'true'
@@ -52,14 +52,14 @@ jobs:
         run: |
           SHORT_SHA=${SHORT_SHA::7}
           docker build -t main-api:$SHORT_SHA ./servicios/api
-          docker tag main-api:$SHORT_SHA 211125350155.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA
-          docker push 211125350155.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA
+          docker tag main-api:$SHORT_SHA ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA
 
       - name: Update deployment file
         if: steps.changes.outputs.api == 'true' && steps.check-image.outputs.outcome != 'success'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          sed -i "s|image:.*|image: 211125350155.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./kubernetes/main-api-deployment.yaml
+          sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./kubernetes/main-api-deployment.yaml
 
       - name: Commit and push changes
         if: steps.changes.outputs.api == 'true' && steps.check-image.outputs.outcome != 'success'
@@ -96,34 +96,34 @@ jobs:
 
       - name: Log in to ECR
         run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 211125350155.dkr.ecr.us-east-1.amazonaws.com
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
 
-      - name: Check if auxiliary-service image exists in ECR
-        id: check-image
+      - name: Ensure ECR repository exists
+        if: steps.changes.outputs.aux == 'true'
+        id: ensure-repo
         run: |
-          IMAGE_TAG=${GITHUB_SHA::7}
-          aws ecr describe-images --repository-name auxiliary-service --image-ids imageTag=$IMAGE_TAG --region us-east-1 || echo "IMAGE_NOT_FOUND"
-        continue-on-error: true
+          aws ecr describe-repositories --repository-names auxiliary-service --region us-east-1 || \
+          (aws ecr create-repository --repository-name auxiliary-service --region us-east-1 && echo "REPO_CREATED=true" >> $GITHUB_ENV)
 
       - name: Build and push auxiliary-service image
-        if: steps.changes.outputs.aux == 'true' || steps.check-image.outputs.outcome != 'success'
+        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED != 'true'
         env:
           SHORT_SHA: ${{ github.sha }}
         run: |
           SHORT_SHA=${SHORT_SHA::7}
           docker build -t auxiliary-service:$SHORT_SHA ./servicios/aux
-          docker tag auxiliary-service:$SHORT_SHA 211125350155.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA
-          docker push 211125350155.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA
+          docker tag auxiliary-service:$SHORT_SHA ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA
         continue-on-error: false
 
       - name: Update deployment file
-        if: steps.changes.outputs.aux == 'true' || steps.check-image.outputs.outcome != 'success'
+        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED != 'true'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          sed -i "s|image:.*|image: 211125350155.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/auxiliary-service-deployment.yaml
+          sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/auxiliary-service-deployment.yaml
 
       - name: Commit and push changes
-        if: steps.changes.outputs.aux == 'true' || steps.check-image.outputs.outcome != 'success'
+        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED != 'true'
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
