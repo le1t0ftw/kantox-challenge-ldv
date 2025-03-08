@@ -13,9 +13,6 @@ spec:
     targetRevision: 51.1.0
     helm:
       releaseName: prometheus
-      parameters:
-        - name: prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues
-          value: "false"
   project: default
   syncPolicy:
     automated:
