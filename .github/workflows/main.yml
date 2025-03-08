@@ -117,13 +117,13 @@ jobs:
         continue-on-error: false
 
       - name: Update deployment file
-        if: steps.changes.outputs.aux == 'true' && steps.check-image.outputs.outcome != 'success'
+        if: steps.changes.outputs.aux == 'true' || steps.check-image.outputs.outcome != 'success'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
           sed -i "s|image:.*|image: 211125350155.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/auxiliary-service-deployment.yaml
 
       - name: Commit and push changes
-        if: steps.changes.outputs.aux == 'true' && steps.check-image.outputs.outcome != 'success'
+        if: steps.changes.outputs.aux == 'true' || steps.check-image.outputs.outcome != 'success'
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
