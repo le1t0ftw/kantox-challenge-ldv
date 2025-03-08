@@ -102,7 +102,6 @@ jobs:
         id: ensure-repo
         run: |
           aws ecr describe-repositories --repository-names auxiliary-service --region us-east-1 || \
-          echo "Creating new repository" \
           (aws ecr create-repository --repository-name auxiliary-service --region us-east-1 && echo "REPO_CREATED=true" >> $GITHUB_ENV)
 
       - name: Build and push auxiliary-service image
