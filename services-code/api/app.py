@@ -7,6 +7,7 @@ app = FastAPI()
 AUX_SERVICE_URL = os.getenv("AUX_SERVICE_URL", "http://auxiliary-service:8000")
 SERVICE_VERSION = os.getenv("SERVICE_VERSION", "1.0.0")
 
+
 @app.get("/buckets")
 def list_buckets():
     """Consulta el Auxiliary Service para obtener la lista de buckets."""
