@@ -101,11 +101,12 @@ jobs:
       - name: Ensure ECR repository exists
         id: ensure-repo
         run: |
-          aws ecr describe-repositories --repository-names auxiliary-service --region us-east-1 && \
+          aws ecr describe-repositories --repository-names auxiliary-service --region us-east-1 || \
+          echo "Creating new repository" \
           (aws ecr create-repository --repository-name auxiliary-service --region us-east-1 && echo "REPO_CREATED=true" >> $GITHUB_ENV)
 
       - name: Build and push auxiliary-service image
-        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED != 'true'
+        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
         env:
           SHORT_SHA: ${{ github.sha }}
         run: |
@@ -116,13 +117,13 @@ jobs:
         continue-on-error: false
 
       - name: Update deployment file
-        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED != 'true'
+        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
           sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/auxiliary-service-deployment.yaml
 
       - name: Commit and push changes
-        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED != 'true'
+        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
