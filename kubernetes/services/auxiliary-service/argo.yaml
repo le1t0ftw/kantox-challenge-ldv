@@ -1,19 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-of-apps
+  name: auxiliary-service
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: "git@github.com:le1t0ftw/kantox-challenge-ldv.git"
-    path: kubernetes
     targetRevision: main
-    directory:
-      recurse: true
+    path: kubernetes/auxiliary-service
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: auxiliary-namespace
   syncPolicy:
     automated:
       prune: true
