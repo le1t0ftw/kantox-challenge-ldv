@@ -4,7 +4,9 @@ metadata:
   name: main-api
   namespace: microservices
 spec:
-  replicas: 2
+  imagePullSecrets:
+    - name: ecr-registry
+  replicas: 1
   selector:
     matchLabels:
       app: main-api
