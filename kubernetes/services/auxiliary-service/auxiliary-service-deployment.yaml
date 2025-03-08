@@ -5,7 +5,7 @@ metadata:
   namespace: auxiliary-service
 spec:
   imagePullSecrets:
-    - name: ecr-registry
+    - name: awsecr-cred
   replicas: 1
   selector:
     matchLabels:
