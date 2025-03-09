@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: auxiliary-service-monitor
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: auxiliary-service
+  namespaceSelector:
+    matchNames:
+      - auxiliary-service
+  endpoints:
+    - port: http-metrics
+      interval: 15s
