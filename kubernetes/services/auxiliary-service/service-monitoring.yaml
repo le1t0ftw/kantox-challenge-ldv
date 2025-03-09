@@ -13,6 +13,6 @@ spec:
     matchNames:
       - auxiliary-service
   endpoints:
-    - port: 8000
+    - port: "8000"
       path: /metrics
       interval: 15s
