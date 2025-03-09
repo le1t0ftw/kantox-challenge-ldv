@@ -17,6 +17,8 @@ spec:
         prometheus:
           prometheusSpec:
             serviceMonitorSelectorNilUsesHelmValues: false
+        kubeStateMetrics:
+          enabled: true
   syncPolicy:
     automated:
       prune: true
@@ -93,4 +95,3 @@ spec:
               datasource: Prometheus
 
 ---
-
