@@ -1,33 +1,33 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: prometheus
-#   namespace: argocd
-# spec:
-#   destination:
-#     namespace: monitoring
-#     server: https://kubernetes.default.svc
-#   project: default
-#   source:
-#     chart: kube-prometheus-stack
-#     repoURL: https://prometheus-community.github.io/helm-charts
-#     targetRevision: 69.8.0
-#     helm:
-#       values: |
-#         kubeStateMetrics:
-#           enabled: true
-#         prometheus:
-#           prometheusSpec:
-#             serviceMonitorSelectorNilUsesHelmValues: false
-#             serviceMonitorNamespaceSelector: {}
-#             scrapeInterval: 15s
-#             evaluationInterval: 15s
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
-#     syncOptions:
-#     - CreateNamespace=true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: kube-prometheus-stack
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 69.8.0
+    helm:
+      values: |
+        kubeStateMetrics:
+          enabled: true
+        prometheus:
+          prometheusSpec:
+            serviceMonitorSelectorNilUsesHelmValues: false
+            serviceMonitorNamespaceSelector: {}
+            scrapeInterval: 15s
+            evaluationInterval: 15s
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
 
 ---
 apiVersion: argoproj.io/v1alpha1
