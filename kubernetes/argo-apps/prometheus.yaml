@@ -72,15 +72,25 @@ spec:
         adminPassword: "admin"
         persistence:
           enabled: true
+        datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+              - name: Prometheus
+                type: prometheus
+                url: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+                access: proxy
+                isDefault: true
         dashboards:
           default:
             main-api:
-              gnetId: 1860  # ID de un dashboard predefinido para API metrics
+              gnetId: 1860
               revision: 1
               datasource: Prometheus
             auxiliary-service:
-              gnetId: 8588  # ID de un dashboard predefinido para microservicios
+              gnetId: 8588
               revision: 1
               datasource: Prometheus
+
 ---
 
