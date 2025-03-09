@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 import boto3
 import os
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI()
 
+# Configuración de AWS
 region_name = os.getenv("AWS_REGION", "us-east-1")
 session = boto3.Session(region_name=region_name)
 s3_client = session.client("s3")
@@ -11,6 +13,8 @@ ssm_client = session.client("ssm")
 
 SERVICE_VERSION = os.getenv("SERVICE_VERSION", "1.0.0")
 
+# Instrumentación de métricas
+Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
 @app.get("/buckets")
 def list_buckets():
@@ -21,7 +25,6 @@ def list_buckets():
         "version": SERVICE_VERSION,
     }
 
-
 @app.get("/parameters")
 def list_parameters():
     """Lista todos los parámetros en AWS Parameter Store."""
@@ -30,7 +33,6 @@ def list_parameters():
         "parameters": [p["Name"] for p in params["Parameters"]],
         "version": SERVICE_VERSION,
     }
-
 
 @app.get("/parameter/{name}")
 def get_parameter(name: str):
