@@ -43,3 +43,4 @@ def get_parameter(name: str):
         "value": response["Parameter"]["Value"],
         "version": SERVICE_VERSION,
     }
+
