@@ -14,11 +14,14 @@ spec:
     targetRevision: 69.8.0
     helm:
       values: |
+        kubeStateMetrics:
+          enabled: true
         prometheus:
           prometheusSpec:
             serviceMonitorSelectorNilUsesHelmValues: false
-        kubeStateMetrics:
-          enabled: true
+            serviceMonitorNamespaceSelector: {}
+            scrapeInterval: 15s
+            evaluationInterval: 15s
   syncPolicy:
     automated:
       prune: true
@@ -86,7 +89,7 @@ spec:
         dashboards:
           default:
             k8s-cluster:
-              gnetId: 3119  # Dashboard de Kubernetes Cluster Monitoring (Grafana)
+              gnetId: 3119
               revision: 1
               datasource: Prometheus
 
