@@ -16,6 +16,7 @@ SERVICE_VERSION = os.getenv("SERVICE_VERSION", "1.0.0")
 # Instrumentación de métricas
 Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
+
 @app.get("/buckets")
 def list_buckets():
     """Lista todos los buckets de S3."""
