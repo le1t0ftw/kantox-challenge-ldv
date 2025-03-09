@@ -25,6 +25,7 @@ def list_buckets():
         "version": SERVICE_VERSION,
     }
 
+
 @app.get("/parameters")
 def list_parameters():
     """Lista todos los parámetros en AWS Parameter Store."""
@@ -33,6 +34,7 @@ def list_parameters():
         "parameters": [p["Name"] for p in params["Parameters"]],
         "version": SERVICE_VERSION,
     }
+
 
 @app.get("/parameter/{name}")
 def get_parameter(name: str):
@@ -43,4 +45,3 @@ def get_parameter(name: str):
         "value": response["Parameter"]["Value"],
         "version": SERVICE_VERSION,
     }
-
