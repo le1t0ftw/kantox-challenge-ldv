@@ -91,6 +91,15 @@ jobs:
           SHORT_SHA=${GITHUB_SHA::7}
           sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/main-api:$SHORT_SHA|g" ./kubernetes/services/main-api/main-api-deployment.yaml
 
+      - name: Increment SERVICE_VERSION in configmap.yaml
+        if: steps.changes.outputs.api == 'true' || env.REPO_CREATED == 'true'
+        run: |
+          CONFIGMAP_FILE="./kubernetes/services/main-api/configmap.yaml"
+          CURRENT_VERSION=$(grep 'SERVICE_VERSION:' $CONFIGMAP_FILE | awk -F'"' '{print $2}')
+          NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. -v OFS=. '{$NF++;print}')
+          sed -i "s|SERVICE_VERSION: \"$CURRENT_VERSION\"|SERVICE_VERSION: \"$NEW_VERSION\"|g" $CONFIGMAP_FILE
+          echo "Incremented SERVICE_VERSION to $NEW_VERSION"
+
       - name: Commit and push changes
         if: steps.changes.outputs.api == 'true' || env.REPO_CREATED == 'true'
         env:
@@ -165,6 +174,15 @@ jobs:
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
           sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/services/auxiliary-service/auxiliary-service-deployment.yaml
+
+      - name: Increment SERVICE_VERSION in configmap.yaml
+        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
+        run: |
+          CONFIGMAP_FILE="./kubernetes/services/auxiliary-service/configmap.yaml"
+          CURRENT_VERSION=$(grep 'SERVICE_VERSION:' $CONFIGMAP_FILE | awk -F'"' '{print $2}')
+          NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. -v OFS=. '{$NF++;print}')
+          sed -i "s|SERVICE_VERSION: \"$CURRENT_VERSION\"|SERVICE_VERSION: \"$NEW_VERSION\"|g" $CONFIGMAP_FILE
+          echo "Incremented SERVICE_VERSION to $NEW_VERSION"
 
       - name: Commit and push changes
         if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
