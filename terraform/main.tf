@@ -2,6 +2,7 @@
 module "s3" {
   source      = "./modules/s3"  # Path to the S3 module
   bucket_name = var.bucket_name  # The name to be assigned to the S3 bucket
+
 }
 
 # Module to create an AWS Systems Manager Parameter Store entry

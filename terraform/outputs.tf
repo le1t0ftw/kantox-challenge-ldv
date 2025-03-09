@@ -1,6 +1,6 @@
 output "s3_bucket" {
   description = "Nombre del bucket S3"
-  value       = module.s3.bucket_name
+  value       = module.s3.arn
 }
 
 output "parameter_name" {
