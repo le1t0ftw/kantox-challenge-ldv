@@ -8,11 +8,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: main-api  # Este label debe coincidir con el Service que expone métricas
+      app: main-api 
   namespaceSelector:
     matchNames:
       - main-api
   endpoints:
-    - port: 8000
+    - port: "8000"
       path: /metrics
       interval: 15s
