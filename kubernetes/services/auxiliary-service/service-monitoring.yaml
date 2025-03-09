@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: argocd.argoproj.io/instance=auxiliary-service 
+      app: auxiliary-service 
   namespaceSelector:
     matchNames:
       - auxiliary-service
