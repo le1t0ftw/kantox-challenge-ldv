@@ -85,13 +85,10 @@ spec:
                 isDefault: true
         dashboards:
           default:
-            main-api:
-              gnetId: 1860
+            k8s-cluster:
+              gnetId: 3119  # Dashboard de Kubernetes Cluster Monitoring (Grafana)
               revision: 1
               datasource: Prometheus
-            auxiliary-service:
-              gnetId: 8588
-              revision: 1
-              datasource: Prometheus
+
 
 ---
