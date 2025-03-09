@@ -8,10 +8,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: auxiliary-service
+      app: auxiliary-service 
   namespaceSelector:
     matchNames:
       - auxiliary-service
   endpoints:
-    - port: http-metrics
+    - port: 8000
+      path: /metrics
       interval: 15s
