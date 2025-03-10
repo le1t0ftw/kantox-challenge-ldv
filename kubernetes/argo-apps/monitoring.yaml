@@ -103,14 +103,6 @@ spec:
             url-Monitoring:
               gnetId: 18896
               datasource: VictoriaMetrics
-            kubernetes-cluster:
-              gnetId: 6417
-              revision: 1
-              datasource: VictoriaMetrics
-            node-exporter:
-              gnetId: 1860
-              revision: 1
-              datasource: VictoriaMetrics
   syncPolicy:
     automated:
       prune: true
