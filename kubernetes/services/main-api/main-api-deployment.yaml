@@ -20,6 +20,7 @@ spec:
         image: 381492006952.dkr.ecr.us-east-1.amazonaws.com/main-api:ac939e3
         ports:
         - containerPort: 8000
+        - containerPort: 9000
         envFrom:
         - configMapRef:
             name: app-config
