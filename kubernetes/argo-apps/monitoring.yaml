@@ -1,155 +1,155 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: prometheus
-  namespace: argocd
-spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    chart: prometheus
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 27.5.1
-    helm:
-      values: |
-        server:
-          extraScrapeConfigs: |
-            - job_name: "kubernetes-pods"
-              kubernetes_sd_configs:
-                - role: pod
-              relabel_configs:
-                - source_labels: [__meta_kubernetes_namespace]
-                  action: replace
-                  target_label: namespace
-                - source_labels: [__meta_kubernetes_pod_name]
-                  action: replace
-                  target_label: pod
-                - action: keep
-                  source_labels: [__meta_kubernetes_pod_phase]
-                  regex: Running
-            - job_name: "kube-state-metrics"
-              static_configs:
-                - targets: ["kube-state-metrics.monitoring.svc.cluster.local:8080"]
-          remoteWrite:
-            - url: "http://victoria-metrics-victoria-metrics-single-server:8428/api/v1/write"
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: prometheus
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: monitoring
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     chart: prometheus
+#     repoURL: https://prometheus-community.github.io/helm-charts
+#     targetRevision: 27.5.1
+#     helm:
+#       values: |
+#         server:
+#           extraScrapeConfigs: |
+#             - job_name: "kubernetes-pods"
+#               kubernetes_sd_configs:
+#                 - role: pod
+#               relabel_configs:
+#                 - source_labels: [__meta_kubernetes_namespace]
+#                   action: replace
+#                   target_label: namespace
+#                 - source_labels: [__meta_kubernetes_pod_name]
+#                   action: replace
+#                   target_label: pod
+#                 - action: keep
+#                   source_labels: [__meta_kubernetes_pod_phase]
+#                   regex: Running
+#             - job_name: "kube-state-metrics"
+#               static_configs:
+#                 - targets: ["kube-state-metrics.monitoring.svc.cluster.local:8080"]
+#           remoteWrite:
+#             - url: "http://victoria-metrics-victoria-metrics-single-server:8428/api/v1/write"
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
 
 
 
----
+# ---
 
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: victoria-metrics
-  namespace: argocd
-spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    chart: victoria-metrics-single
-    repoURL: https://victoriametrics.github.io/helm-charts/
-    targetRevision: 0.14.3
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: victoria-metrics
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: monitoring
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     chart: victoria-metrics-single
+#     repoURL: https://victoriametrics.github.io/helm-charts/
+#     targetRevision: 0.14.3
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
 
----
+# ---
 
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: grafana
-  namespace: argocd
-spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    chart: grafana
-    repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 8.10.2
-    helm:
-      values: |
-        datasources:
-          datasources.yaml:
-            apiVersion: 1
-            datasources:
-              - name: VictoriaMetrics
-                type: prometheus
-                url: http://victoria-metrics-victoria-metrics-single-server:8428
-                access: proxy
-                isDefault: true
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: grafana
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: monitoring
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     chart: grafana
+#     repoURL: https://grafana.github.io/helm-charts
+#     targetRevision: 8.10.2
+#     helm:
+#       values: |
+#         datasources:
+#           datasources.yaml:
+#             apiVersion: 1
+#             datasources:
+#               - name: VictoriaMetrics
+#                 type: prometheus
+#                 url: http://victoria-metrics-victoria-metrics-single-server:8428
+#                 access: proxy
+#                 isDefault: true
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
 
----
+# ---
 
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kube-state-metrics
-  namespace: argocd
-spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    chart: kube-state-metrics
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 5.30.1
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: kube-state-metrics
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: monitoring
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     chart: kube-state-metrics
+#     repoURL: https://prometheus-community.github.io/helm-charts
+#     targetRevision: 5.30.1
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
 
----
+# ---
 
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: prometheus-crds
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io  
-spec:
-    destination:
-      namespace: monitoring
-      server: https://kubernetes.default.svc
-    project: default  
-    source:
-      repoURL: https://prometheus-community.github.io/helm-charts
-      chart: prometheus-operator-crds
-      targetRevision: 18.0.1
-    syncPolicy:
-      automated:
-        prune: true
-        selfHeal: true
-      syncOptions:
-      - CreateNamespace=true
-      - Replace=true
-    syncOptions:
-    - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: prometheus-crds
+#   namespace: argocd
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io  
+# spec:
+#     destination:
+#       namespace: monitoring
+#       server: https://kubernetes.default.svc
+#     project: default  
+#     source:
+#       repoURL: https://prometheus-community.github.io/helm-charts
+#       chart: prometheus-operator-crds
+#       targetRevision: 18.0.1
+#     syncPolicy:
+#       automated:
+#         prune: true
+#         selfHeal: true
+#       syncOptions:
+#       - CreateNamespace=true
+#       - Replace=true
+#     syncOptions:
+#     - CreateNamespace=true
 
 
 ---
