@@ -38,7 +38,7 @@ spec:
                 module: [http_2xx]
               static_configs:
                 - targets:
-                  - http://main-api.main-api.svc.cluster.local:8000/metrics
+                  - http://main-api.main-api.svc.cluster.local:9000/metrics
               relabel_configs:
                 - source_labels: [__address__]
                   target_label: __param_target
