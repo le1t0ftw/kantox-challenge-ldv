@@ -1,186 +1,227 @@
-Kantox Challenge - DevOps
+# Kantox Challenge - DevOps
 
-Introducción
+## 📌 Introduction
 
-Este proyecto es parte de un challenge técnico para una posición de Cloud Engineer / DevOps. La aplicación está diseñada para ejecutarse en un entorno local de Kubernetes utilizando Minikube.
+This project is part of a **technical challenge** for a **Cloud Engineer / DevOps** position.  
+The application is designed to run in a **local Kubernetes environment** using **Minikube**.
 
-Requisitos
+---
 
-Para ejecutar este proyecto en un ambiente local, necesitas contar con una cuenta de AWS, la cual servirá para el despliegue de la infraestructura con Terraform y para almacenar las imágenes que serán creadas por el pipeline.
+## 🚀 Prerequisites
 
-Además, se requieren las siguientes herramientas:
+To run this project in a local environment, you need an **AWS account**,  
+which will be used for **deploying the infrastructure with Terraform** and  
+for **storing the Docker images** created by the pipeline.
 
-Minikube
+Additionally, install the following tools:
 
-Argo CD
+- [Minikube](https://minikube.sigs.k8s.io/docs/)
+- [Argo CD](https://argo-cd.readthedocs.io/)
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [Helm](https://helm.sh/)
+- [Docker](https://docs.docker.com/get-docker/)
+- [Terraform](https://developer.hashicorp.com/terraform/downloads)
 
-Kubectl
+---
 
-Helm
+## 🔧 Installation & Configuration
 
-Docker
-
-Terraform
-
-Instalación y Configuración
-
-1. Iniciar Minikube
-
+### **1️⃣ Start Minikube**
+```sh
 minikube start --memory=4g --cpus=2
+```
 
-2. Instalar y configurar el plugin para autenticación con AWS ECR
+### **2️⃣ Install & Configure AWS ECR Plugin**
+Minikube **does not support ServiceAccounts with AWS**, so we need to enable  
+the **`registry-creds` plugin** for authentication with **Amazon ECR**.
 
-Para poder extraer imágenes desde Amazon ECR, se debe instalar y configurar el complemento registry-creds en Minikube. Este complemento permite que los nodos del clúster obtengan credenciales de autenticación automáticamente para acceder a los registros privados de contenedores.
-
-Nota: Minikube no soporta ServiceAccount con AWS, por lo que es necesario utilizar este complemento para la autenticación con ECR.
-
-Habilitar el complemento
-
+#### Enable the plugin:
+```sh
 minikube addons enable registry-creds
+```
 
-Configurar el complemento para AWS
-
+#### Configure the plugin:
+```sh
 minikube addons configure registry-creds
+```
 
-Durante la configuración, se te pedirá seleccionar un proveedor de registro. Debes elegir aws e ingresar la información requerida:
+During the setup, select **AWS** and enter:
 
-AWS_ACCESS_KEY_ID: Clave de acceso de AWS
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_ACCOUNT_ID`
 
-AWS_SECRET_ACCESS_KEY: Clave secreta de AWS
-
-AWS_ACCOUNT_ID: ID de la cuenta de AWS
-
-Verificar la configuración
-
+#### Verify Configuration:
+```sh
 kubectl get secrets -n kube-system | grep registry-creds
+```
+If a secret with the prefix `registry-creds` appears, the setup was successful.
 
-Si ves un secreto con el prefijo registry-creds, significa que la configuración fue exitosa.
+---
 
-Despliegue de Infraestructura con Terraform
+## 🌍 Terraform Infrastructure Deployment
 
-Antes de desplegar las aplicaciones en Kubernetes, es necesario desplegar la infraestructura en AWS utilizando Terraform. Esta infraestructura es fundamental, ya que proporcionará los recursos necesarios para que la aplicación diseñada en Python pueda realizar las consultas adecuadas. Para este challenge, el statefile de Terraform se conservará de manera local.
+Before deploying applications in Kubernetes, deploy the **AWS infrastructure**  
+using **Terraform**. The **Terraform state file** will be **stored locally** for this challenge.
 
-Descripción de la Infraestructura
+### **📌 Infrastructure Overview**
+| AWS Service | Purpose |
+|-------------|---------|
+| **S3 Bucket** | Stores static files and logs. |
+| **IAM Role & Policies** | Grants permissions to services. |
+| **Parameter Store** | Securely stores app configuration values. |
 
-La infraestructura provisionada con Terraform incluye los siguientes recursos en AWS:
-
-Amazon S3: Un bucket para almacenar archivos estáticos o logs.
-
-IAM Roles y Policies: Permisos adecuados para que los servicios puedan interactuar entre sí de manera segura.
-
-Amazon Parameter Store: Un servicio de AWS Systems Manager utilizado para almacenar valores sensibles y configuraciones, como credenciales de bases de datos y claves API, de manera segura.
-
-1. Inicializar Terraform
-
+### **1️⃣ Initialize Terraform**
+```sh
 cd terraform
 terraform init
+```
 
-2. Planificar la infraestructura
-
+### **2️⃣ Plan Deployment**
+```sh
 terraform plan
+```
+Shows the **AWS resources** that will be created.
 
-Esto mostrará los recursos que se crearán en AWS.
-
-3. Aplicar la infraestructura
-
+### **3️⃣ Apply Deployment**
+```sh
 terraform apply -auto-approve
+```
+This will deploy the **S3 bucket, IAM roles, and Parameter Store settings**.
 
-Una vez finalizado el despliegue de la infraestructura, se puede proceder con la configuración y despliegue de las aplicaciones.
+---
 
-CI/CD
+## ⚙️ CI/CD Pipeline - GitHub Actions
 
-Configuración Inicial
+### **📌 Configuration**
+Before running the pipeline, create a **fork** of this repository and set  
+the following **GitHub Actions secrets**:
 
-Para utilizar este repositorio correctamente, es necesario realizar un fork del mismo en tu cuenta de GitHub y configurar los secrets correspondientes para la cuenta de AWS en GitHub Actions.
+| Secret Name | Purpose |
+|-------------|---------|
+| `AWS_ACCESS_KEY_ID` | AWS Access Key |
+| `AWS_SECRET_ACCESS_KEY` | AWS Secret Key |
+| `AWS_ACCOUNT_ID` | AWS Account ID |
 
-Los secrets necesarios son:
+**Path:** `Settings > Secrets and variables > Actions`
 
-AWS_ACCESS_KEY_ID: Clave de acceso de AWS
+---
 
-AWS_SECRET_ACCESS_KEY: Clave secreta de AWS
-
-AWS_ACCOUNT_ID: ID de la cuenta de AWS
-
-Estos valores deben configurarse en la sección de Settings > Secrets and variables > Actions de tu fork en GitHub.
-
-Estructura del Repositorio
-
+### **📌 Pipeline Structure**
+```sh
 /
-|-- main-api/               # Microservicio principal
-|-- auxiliary-service/      # Microservicio auxiliar
-|-- k8s/                    # Manifiestos de Kubernetes
-|-- terraform/              # Infraestructura como código
-|-- .github/workflows/      # Pipelines de CI/CD
-|-- README.md               # Documentación
+|-- main-api/               # Microservice: main API
+|-- auxiliary-service/      # Microservice: auxiliary service
+|-- k8s/                    # Kubernetes manifests
+|-- terraform/              # Infrastructure as code
+|-- .github/workflows/      # GitHub Actions workflows
+|-- README.md               # Documentation
+```
 
-Pasos del Pipeline
+### **📌 CI/CD Steps**
+1️⃣ **Validate Code**  
+2️⃣ **Lint Dockerfiles**  
+3️⃣ **Build & Push Docker Images to AWS ECR**  
+4️⃣ **Update Kubernetes Deployment Files**  
+5️⃣ **Deploy Updates using Argo CD**  
 
-Validación del Código
+---
 
-Construcción y Test de la Aplicación
+## 🚢 Deployment with Argo CD
 
-Construcción de Imágenes Docker
+Argo CD manages Kubernetes deployments automatically.
 
-Push de Imágenes a AWS ECR
-
-Despliegue de Infraestructura con Terraform
-
-Aplicación de los Manifiestos de Kubernetes
-
-Verificación del Despliegue
-
-Despliegue con Argo CD
-
-Este proyecto utiliza Argo CD para el despliegue en Kubernetes. Para instalarlo y sincronizar la aplicación:
-
+### **1️⃣ Install Argo CD**
+```sh
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
 
-Agregar el repositorio de GitHub a Argo CD
+### **2️⃣ Add GitHub Repository to Argo CD**
+1. Generate an **SSH key**.
+2. Add the **public key** to GitHub.
+3. Configure **Argo CD** to use this key.
+4. Verify the repository connection.
 
-Generar una clave SSH
-
-Agregar la clave pública a GitHub
-
-Configurar Argo CD para usar la clave SSH
-
-Verificar que el repositorio fue agregado correctamente
-
-Desplegar las aplicaciones en Argo CD
-
+### **3️⃣ Deploy Applications**
+```sh
 kubectl apply -f kubernetes/argo-deploy.yaml
+```
 
-Componentes Desplegados
+### **📌 Components Deployed**
+- ✅ `main-api`
+- ✅ `auxiliary-service`
+- ✅ `Grafana & Prometheus` (for monitoring)
 
-Main API: Servicio principal.
+---
 
-Auxiliary Service: Servicio auxiliar.
+## 🔍 API Testing Guide
 
-Grafana y Prometheus: Monitoreo del sistema y métricas.
+This guide explains how to **test the API** using `cURL`.
 
-Luego, sincroniza la aplicación desde Argo CD.
+### **1️⃣ Get Available S3 Buckets**
+```sh
+curl http://localhost:8000/buckets
+```
+#### **✅ Expected Response**
+```json
+{
+  "buckets": ["dv12354905834098"],
+  "version": "1.0.0",
+  "main_api_version": "1.0.0"
+}
+```
 
-Prueba de la Aplicación Main API
+---
 
-Una vez finalizado el despliegue, puedes probar el funcionamiento de main-api siguiendo estos pasos:
+### **2️⃣ Get AWS Parameter Store Entries**
+```sh
+curl http://localhost:8000/parameters
+```
+#### **✅ Expected Response**
+```json
+{
+  "parameters": ["prueba-ldv"],
+  "version": "1.0.0",
+  "main_api_version": "1.0.0"
+}
+```
 
-Obtener la URL del servicio en Minikube:
+---
 
-minikube service main-api --url
+### **3️⃣ Get a Specific Parameter's Value**
+```sh
+curl http://localhost:8000/parameter/prueba-ldv
+```
+#### **✅ Expected Response**
+```json
+{
+  "name": "prueba-ldv",
+  "value": "test",
+  "version": "1.0.0",
+  "main_api_version": "1.0.0"
+}
+```
 
-Esto devolverá una URL similar a http://192.168.49.2:30080.
+---
 
-Realizar una petición a la API:
+### **4️⃣ Handling Errors**
+If an incorrect **bucket or parameter name** is used, expect:
+```json
+{
+  "error": "Parameter not found"
+}
+```
 
-curl -X GET http://192.168.49.2:30080/health
+#### **❌ Example Failed Request**
+```sh
+curl http://localhost:8000/parameter/nonexistent-param
+```
+#### **❌ Expected Response**
+```json
+{
+  "error": "Parameter not found"
+}
+```
 
-Esto verificará si la API está corriendo correctamente.
-
-Ejecutar una consulta de prueba:
-
-curl -X GET http://192.168.49.2:30080/api/v1/resource
-
-Sustituye /api/v1/resource por el endpoint real que desees probar.
-
-Si la API responde correctamente, significa que el despliegue ha sido exitoso y la infraestructura está funcionando como se espera.
-
+---
