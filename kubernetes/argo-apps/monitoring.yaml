@@ -16,6 +16,20 @@ spec:
       values: |
         server:
           extraScrapeConfigs: |
+            - job_name: 'blackbox-main-api'
+              metrics_path: /probe
+              params:
+                module: [http_2xx]
+              static_configs:
+                - targets:
+                  - http://main-api.main-api.svc.cluster.local:9000/metrics
+              relabel_configs:
+                - source_labels: [__address__]
+                  target_label: __param_target
+                - target_label: __address__
+                  replacement: blackbox-exporter.monitoring.svc.cluster.local:9115
+                - source_labels: [__param_target]
+                  target_label: instance
             - job_name: "kubernetes-pods"
               kubernetes_sd_configs:
                 - role: pod
