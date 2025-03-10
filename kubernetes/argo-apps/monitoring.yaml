@@ -94,21 +94,21 @@ spec:
                 isDefault: true
         dashboards:
           default:
-            Status:
+            status:
               gnetId: 18538
               datasource: VictoriaMetrics
-            Ping:
+            ping:
               gnetId: 22441
               datasource: VictoriaMetrics
-            Url-Monitoring:
+            url-Monitoring:
               gnetId: 18896
               datasource: VictoriaMetrics
             kubernetes-cluster:
-              gnetId: 6417  # ⚠️ Reemplaza con el ID de un dashboard de Kubernetes en Grafana.com
+              gnetId: 6417
               revision: 1
               datasource: VictoriaMetrics
             node-exporter:
-              gnetId: 1860  # ⚠️ Reemplaza con el ID del dashboard de Node Exporter
+              gnetId: 1860
               revision: 1
               datasource: VictoriaMetrics
   syncPolicy:
