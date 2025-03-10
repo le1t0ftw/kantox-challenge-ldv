@@ -141,7 +141,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add kubernetes/services/auxiliary-service/aws-secrets.yaml
+          git add kubernetes/services/auxiliary-service/aws-secret.yaml
           git commit -m "Updated AWS credentials in Kubernetes Secret" || exit 0
           git pull origin main --rebase
           git push https://x-access-token:${PAT_TOKEN}@github.com/le1t0ftw/kantox-challenge-ldv.git -q
