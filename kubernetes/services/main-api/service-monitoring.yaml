@@ -13,6 +13,6 @@ spec:
     matchLabels:
       app: main-api
   endpoints:
-    - port: "9000"
+    - port: "8000"
       path: /metrics
       interval: 10s
