@@ -1,70 +1,70 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kube-prometheus-stack
-  namespace: argocd
-spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    chart: kube-prometheus-stack
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 69.8.0
-    helm:
-      values: |
-        server:
-          extraScrapeConfigs: |
-            - job_name: 'blackbox-main-api'
-              metrics_path: /probe
-              params:
-                module: [http_2xx]
-              static_configs:
-                - targets:
-                  - http://main-api.main-api.svc.cluster.local:9000/metrics
-              relabel_configs:
-                - source_labels: [__address__]
-                  target_label: __param_target
-                - target_label: __address__
-                  replacement: blackbox-exporter.monitoring.svc.cluster.local:9115
-                - source_labels: [__param_target]
-                  target_label: instance
-        prometheus:
-          prometheusSpec:
-            serviceMonitorSelector: {}
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: kube-prometheus-stack
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: monitoring
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     chart: kube-prometheus-stack
+#     repoURL: https://prometheus-community.github.io/helm-charts
+#     targetRevision: 69.8.0
+#     helm:
+#       values: |
+#         server:
+#           extraScrapeConfigs: |
+#             - job_name: 'blackbox-main-api'
+#               metrics_path: /probe
+#               params:
+#                 module: [http_2xx]
+#               static_configs:
+#                 - targets:
+#                   - http://main-api.main-api.svc.cluster.local:9000/metrics
+#               relabel_configs:
+#                 - source_labels: [__address__]
+#                   target_label: __param_target
+#                 - target_label: __address__
+#                   replacement: blackbox-exporter.monitoring.svc.cluster.local:9115
+#                 - source_labels: [__param_target]
+#                   target_label: instance
+#         prometheus:
+#           prometheusSpec:
+#             serviceMonitorSelector: {}
 
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: prometheus-crds
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io  
-spec:
-    destination:
-      namespace: monitoring
-      server: https://kubernetes.default.svc
-    project: default  
-    source:
-      repoURL: https://prometheus-community.github.io/helm-charts
-      chart: prometheus-operator-crds
-      targetRevision: 18.0.1
-    syncPolicy:
-      automated:
-        prune: true
-        selfHeal: true
-      syncOptions:
-      - CreateNamespace=true
-      - Replace=true
-    syncOptions:
-    - CreateNamespace=true
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: prometheus-crds
+#   namespace: argocd
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io  
+# spec:
+#     destination:
+#       namespace: monitoring
+#       server: https://kubernetes.default.svc
+#     project: default  
+#     source:
+#       repoURL: https://prometheus-community.github.io/helm-charts
+#       chart: prometheus-operator-crds
+#       targetRevision: 18.0.1
+#     syncPolicy:
+#       automated:
+#         prune: true
+#         selfHeal: true
+#       syncOptions:
+#       - CreateNamespace=true
+#       - Replace=true
+#     syncOptions:
+#     - CreateNamespace=true
 
----
+# ---
