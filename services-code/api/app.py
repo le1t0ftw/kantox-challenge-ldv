@@ -9,7 +9,7 @@ SERVICE_VERSION = os.getenv("SERVICE_VERSION", "1.0.0")
 Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
 
-# Esto es un comentario
+# Esto es un comentari
 
 
 @app.get("/buckets")
