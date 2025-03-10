@@ -14,9 +14,8 @@ spec:
     targetRevision: 27.5.1
     helm:
       values: |
-        server:
-          extraScrapeConfigs: |
-            - job_name: 'blackbox-main-api'
+        extraScrapeConfigs: |
+            - job_name: 'prometheus-blackbox-exporter'
               metrics_path: /probe
               params:
                 module: [http_2xx]
@@ -30,6 +29,7 @@ spec:
                   replacement: blackbox-exporter-prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
                 - source_labels: [__param_target]
                   target_label: instance
+        server:
           remoteWrite:
             - url: "http://victoria-metrics-victoria-metrics-single-server:8428/api/v1/write"
   syncPolicy:
