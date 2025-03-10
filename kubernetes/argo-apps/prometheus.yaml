@@ -31,7 +31,7 @@ spec:
                   regex: Running
             - job_name: "kube-state-metrics"
               static_configs:
-                - targets: ["kube-state-metrics.monitoring.svc.cluster.local:8080"]
+                - targets: ["kube-prometheus-stack-kube-state-metrics.monitoring.svc.cluster.local:8080"]
         prometheus:
           prometheusSpec:
             serviceMonitorSelector: {}
