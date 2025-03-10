@@ -16,39 +16,22 @@ spec:
       values: |
         server:
           extraScrapeConfigs: |
-            scrape_configs:
-              - job_name: 'blackbox-main-api'
-                metrics_path: /probe
-                params:
-                  module: [http_2xx]
-                static_configs:
-                  - targets:
-                    - http://main-api.main-api.svc.cluster.local:9000/metrics
-                relabel_configs:
-                  - source_labels: [__address__]
-                    target_label: __param_target
-                  - target_label: __address__
-                    replacement: blackbox-exporter-prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
-                  - source_labels: [__param_target]
-                    target_label: instance
-              - job_name: "kubernetes-pods"
-                kubernetes_sd_configs:
-                  - role: pod
-                relabel_configs:
-                  - source_labels: [__meta_kubernetes_namespace]
-                    action: replace
-                    target_label: namespace
-                  - source_labels: [__meta_kubernetes_pod_name]
-                    action: replace
-                    target_label: pod
-                  - action: keep
-                    source_labels: [__meta_kubernetes_pod_phase]
-                    regex: Running
-              - job_name: "kube-state-metrics"
-                static_configs:
-                  - targets: ["kube-state-metrics.monitoring.svc.cluster.local:8080"]
-        remoteWrite:
-          - url: "http://victoria-metrics-victoria-metrics-single-server:8428/api/v1/write"
+            - job_name: 'blackbox-main-api'
+              metrics_path: /probe
+              params:
+                module: [http_2xx]
+              static_configs:
+                - targets:
+                  - http://main-api.main-api.svc.cluster.local:9000/metrics
+              relabel_configs:
+                - source_labels: [__address__]
+                  target_label: __param_target
+                - target_label: __address__
+                  replacement: blackbox-exporter-prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+                - source_labels: [__param_target]
+                  target_label: instance
+          remoteWrite:
+            - url: "http://victoria-metrics-victoria-metrics-single-server:8428/api/v1/write"
   syncPolicy:
     automated:
       prune: true
