@@ -98,7 +98,7 @@ spec:
               gnetId: 16124 
               datasource: Prometheus
             ping:
-              gnetId: 14928
+              gnetId: 18538
               datasource: Prometheus
         dashboardProviders:
           dashboardproviders.yaml:
