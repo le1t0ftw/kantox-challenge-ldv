@@ -97,6 +97,9 @@ spec:
             status:
               gnetId: 16124 
               datasource: Prometheus
+            ping:
+              gnetId: 14928
+              datasource: Prometheus
         dashboardProviders:
           dashboardproviders.yaml:
             apiVersion: 1
