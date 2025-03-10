@@ -3,6 +3,8 @@ kind: ServiceMonitor
 metadata:
   name: main-api-monitor
   namespace: main-api
+  labels:
+    release: kube-prometheus-stack
 spec:
   # namespaceSelector:
   #   matchNames:
