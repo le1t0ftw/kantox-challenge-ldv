@@ -4,7 +4,7 @@ metadata:
   name: app
   namespace: argocd
 spec:
-  project: app
+  project: default
   source:
     repoURL: "git@github.com:le1t0ftw/kantox-challenge-ldv.git"
     path: kubernetes/argo-apps/app
@@ -27,7 +27,7 @@ metadata:
   name: monitoring
   namespace: argocd
 spec:
-  project: monitoring
+  project: default
   source:
     repoURL: "git@github.com:le1t0ftw/kantox-challenge-ldv.git"
     path: kubernetes/argo-apps/monitoring
