@@ -24,7 +24,7 @@ def list_parameters():
     return response.json() | {"main_api_version": SERVICE_VERSION}
 
 
-@app.get("/parameter/{name}")
+@app.get("/parameters/{name}")
 def get_parameter(name: str):
-    response = requests.get(f"{AUX_SERVICE_URL}/parameter/{name}")
+    response = requests.get(f"{AUX_SERVICE_URL}/parameters/{name}")
     return response.json() | {"main_api_version": SERVICE_VERSION}
