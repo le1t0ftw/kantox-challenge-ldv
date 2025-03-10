@@ -1,18 +1,18 @@
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: main-api-monitor
-  namespace: main-api
-  labels:
-    release: kube-prometheus-stack
-spec:
-  # namespaceSelector:
-  #   matchNames:
-  #     - main-api
-  selector:
-    matchLabels:
-      app: main-api
-  endpoints:
-    - port: "8000"
-      path: /metrics
-      interval: 10s
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: main-api-monitor
+#   namespace: main-api
+#   labels:
+#     release: kube-prometheus-stack
+# spec:
+#   # namespaceSelector:
+#   #   matchNames:
+#   #     - main-api
+#   selector:
+#     matchLabels:
+#       app: main-api
+#   endpoints:
+#     - port: "8000"
+#       path: /metrics
+#       interval: 10s
