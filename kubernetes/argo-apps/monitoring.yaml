@@ -7,7 +7,7 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
-  project: default
+  project: monitoring
   source:
     chart: prometheus
     repoURL: https://prometheus-community.github.io/helm-charts
@@ -53,7 +53,7 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
-  project: default
+  project: monitoring
   source:
     chart: victoria-metrics-single
     repoURL: https://victoriametrics.github.io/helm-charts/
@@ -76,7 +76,7 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
-  project: default
+  project: monitoring
   source:
     chart: grafana
     repoURL: https://grafana.github.io/helm-charts
@@ -130,7 +130,7 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
-  project: default
+  project: monitoring
   source:
     chart: kube-state-metrics
     repoURL: https://prometheus-community.github.io/helm-charts
@@ -155,7 +155,7 @@ spec:
     destination:
       namespace: monitoring
       server: https://kubernetes.default.svc
-    project: default  
+    project: monitoring  
     source:
       repoURL: https://prometheus-community.github.io/helm-charts
       chart: prometheus-operator-crds
@@ -182,7 +182,7 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
-  project: default
+  project: monitoring
   source:
     chart: prometheus-blackbox-exporter
     repoURL: https://prometheus-community.github.io/helm-charts
