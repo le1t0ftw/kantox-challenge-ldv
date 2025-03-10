@@ -3,16 +3,14 @@ kind: ServiceMonitor
 metadata:
   name: main-api-monitor
   namespace: monitoring
-  labels:
-    release: prometheus
 spec:
-  selector:
-    matchLabels:
-      app: main-api 
   namespaceSelector:
     matchNames:
       - main-api
+  selector:
+    matchLabels:
+      app: main-api
   endpoints:
-    - port: "8000"
+    - port: http
       path: /metrics
-      interval: 15s
+      interval: 10s
