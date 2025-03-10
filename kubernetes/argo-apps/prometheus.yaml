@@ -16,22 +16,6 @@ spec:
       values: |
         server:
           extraScrapeConfigs: |
-            - job_name: "kubernetes-pods"
-              kubernetes_sd_configs:
-                - role: pod
-              relabel_configs:
-                - source_labels: [__meta_kubernetes_namespace]
-                  action: replace
-                  target_label: namespace
-                - source_labels: [__meta_kubernetes_pod_name]
-                  action: replace
-                  target_label: pod
-                - action: keep
-                  source_labels: [__meta_kubernetes_pod_phase]
-                  regex: Running
-            - job_name: "kube-state-metrics"
-              static_configs:
-                - targets: ["kube-prometheus-stack-kube-state-metrics.monitoring.svc.cluster.local:8080"]
             - job_name: 'blackbox-main-api'
               metrics_path: /probe
               params:
