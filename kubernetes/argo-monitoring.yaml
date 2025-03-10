@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: App
+  name: Monitoring
   namespace: argocd
 spec:
-  project: app
+  project: monitoring
   source:
     repoURL: "git@github.com:le1t0ftw/kantox-challenge-ldv.git"
-    path: kubernetes/argo-apps/app
+    path: kubernetes/argo-apps/monitoring
     targetRevision: main
     directory:
       recurse: true
