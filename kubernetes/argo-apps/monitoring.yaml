@@ -103,6 +103,18 @@ spec:
             url-Monitoring:
               gnetId: 18896
               datasource: VictoriaMetrics
+        dashboardProviders:
+          dashboardproviders.yaml:
+            apiVersion: 1
+            providers:
+              - name: 'default'
+                orgId: 1
+                folder: ''
+                type: file
+                disableDeletion: false
+                editable: true
+                options:
+                  path: /var/lib/grafana/dashboards/default
   syncPolicy:
     automated:
       prune: true
