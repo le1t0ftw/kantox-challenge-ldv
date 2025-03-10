@@ -87,7 +87,7 @@ spec:
           datasources.yaml:
             apiVersion: 1
             datasources:
-              - name: prometheus
+              - name: Prometheus
                 type: prometheus
                 url: http://victoria-metrics-victoria-metrics-single-server:8428
                 access: proxy
@@ -96,13 +96,13 @@ spec:
           default:
             status:
               gnetId: 18538
-              datasource: prometheus
+              datasource: Prometheus
             ping:
               gnetId: 22441
-              datasource: prometheus
+              datasource: Prometheus
             url-Monitoring:
               gnetId: 18896
-              datasource: prometheus
+              datasource: Prometheus
         dashboardProviders:
           dashboardproviders.yaml:
             apiVersion: 1
