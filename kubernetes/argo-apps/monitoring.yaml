@@ -45,80 +45,80 @@ spec:
 
 ---
 
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: victoria-metrics
-  namespace: argocd
-spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    chart: victoria-metrics-single
-    repoURL: https://victoriametrics.github.io/helm-charts/
-    targetRevision: 1.112.0
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: victoria-metrics
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: monitoring
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     chart: victoria-metrics-single
+#     repoURL: https://victoriametrics.github.io/helm-charts/
+#     targetRevision: 1.112.0
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
 
----
+# ---
 
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: grafana
-  namespace: argocd
-spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    chart: grafana
-    repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 11.5.2
-    helm:
-      values: |
-        datasources:
-          datasources.yaml:
-            apiVersion: 1
-            datasources:
-              - name: VictoriaMetrics
-                type: prometheus
-                url: http://victoria-metrics-victoria-metrics-single-server:8428
-                access: proxy
-                isDefault: true
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: grafana
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: monitoring
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     chart: grafana
+#     repoURL: https://grafana.github.io/helm-charts
+#     targetRevision: 11.5.2
+#     helm:
+#       values: |
+#         datasources:
+#           datasources.yaml:
+#             apiVersion: 1
+#             datasources:
+#               - name: VictoriaMetrics
+#                 type: prometheus
+#                 url: http://victoria-metrics-victoria-metrics-single-server:8428
+#                 access: proxy
+#                 isDefault: true
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
 
----
+# ---
 
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kube-state-metrics
-  namespace: argocd
-spec:
-  destination:
-    namespace: monitoring
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    chart: kube-state-metrics
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 2.15.0
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: kube-state-metrics
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: monitoring
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     chart: kube-state-metrics
+#     repoURL: https://prometheus-community.github.io/helm-charts
+#     targetRevision: 2.15.0
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
