@@ -95,13 +95,7 @@ spec:
         dashboards:
           default:
             status:
-              gnetId: 18538
-              datasource: Prometheus
-            ping:
-              gnetId: 22441
-              datasource: Prometheus
-            url-Monitoring:
-              gnetId: 18896
+              gnetId: 16124 
               datasource: Prometheus
         dashboardProviders:
           dashboardproviders.yaml:
