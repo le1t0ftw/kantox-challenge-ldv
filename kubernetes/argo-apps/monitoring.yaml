@@ -92,6 +92,25 @@ spec:
                 url: http://victoria-metrics-victoria-metrics-single-server:8428
                 access: proxy
                 isDefault: true
+        dashboards:
+          default:
+            Status:
+              gnetId: 18538
+              datasource: VictoriaMetrics
+            Ping:
+              gnetId: 22441
+              datasource: VictoriaMetrics
+            Url-Monitoring:
+              gnetId: 18896
+              datasource: VictoriaMetrics
+            kubernetes-cluster:
+              gnetId: 6417  # ⚠️ Reemplaza con el ID de un dashboard de Kubernetes en Grafana.com
+              revision: 1
+              datasource: VictoriaMetrics
+            node-exporter:
+              gnetId: 1860  # ⚠️ Reemplaza con el ID del dashboard de Node Exporter
+              revision: 1
+              datasource: VictoriaMetrics
   syncPolicy:
     automated:
       prune: true
