@@ -42,8 +42,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Replace AWS Keys in Secret YAML
         run: |
-          sed -i "s|AWS_ACCESS_KEY_ID:.*|AWS_ACCESS_KEY_ID: $(echo -n '${{ secrets.AWS_ACCESS_KEY_ID }}' | base64)|g" kubernetes/services/auxiliary-service/aws-secrets.yaml
-          sed -i "s|AWS_SECRET_ACCESS_KEY:.*|AWS_SECRET_ACCESS_KEY: $(echo -n '${{ secrets.AWS_SECRET_ACCESS_KEY }}' | base64)|g" kubernetes/services/auxiliary-service/aws-secrets.yaml
+          sed -i "s|AWS_ACCESS_KEY_ID:.*|AWS_ACCESS_KEY_ID: $(echo -n '${{ secrets.AWS_ACCESS_KEY_ID }}' | base64)|g" kubernetes/services/auxiliary-service/aws-secret.yaml
+          sed -i "s|AWS_SECRET_ACCESS_KEY:.*|AWS_SECRET_ACCESS_KEY: $(echo -n '${{ secrets.AWS_SECRET_ACCESS_KEY }}' | base64)|g" kubernetes/services/auxiliary-service/aws-secret.yaml
       - name: Commit and Push Changes
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
