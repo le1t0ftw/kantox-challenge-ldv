@@ -93,7 +93,7 @@ spec:
                 access: proxy
                 isDefault: true
         dashboards:
-          pirulo:
+          default:
             status:
               gnetId: 18538
               datasource: VictoriaMetrics
