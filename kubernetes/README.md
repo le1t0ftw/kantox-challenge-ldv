@@ -32,7 +32,7 @@ the following **GitHub Actions secrets**:
 4️⃣ **Update Kubernetes Deployment Files**  
 5️⃣ **Deploy Updates using Argo CD**  
 
-🔗 **[See detailed step by step guide: ](documents/cicd-step-by-step.md)** 
+🔗 **[See detailed step by step pipeline guide: ](documents/cicd-step-by-step.md)** 
 
 ## 🚢 Deployment with Argo CD
 
