@@ -71,7 +71,7 @@ Once the infrastructure is deployed, services are managed and deployed using:
 - **GitHub Actions (CI/CD)**
 - **Argo CD (Kubernetes GitOps)**
 
-🔗 **[Full guide in `documents/argocd.md`](documents/argocd.md)**  
+🔗 **[Full guide in `kubernetes/README.md`](kubernetes/README.md)**  
 
 ### **Summary of Steps:**
 #### **Deploy Argo CD**
