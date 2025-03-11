@@ -2,6 +2,15 @@
 
 This guide explains how to **test the API** using `cURL`.
 
+The main-api must be exposed on port 8001 before testing.
+
+Expose the main-api:
+Run the following command to expose the main-api service:
+```sh
+kubectl port-forward svc/main-api -n default 8001:80
+```
+This forwards port 8001 on your local machine to the main-api running in Kubernetes.
+
 ### **1️⃣ Get Available S3 Buckets**
 ```sh
 curl http://localhost:8000/buckets
