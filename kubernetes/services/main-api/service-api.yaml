@@ -10,7 +10,7 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: 8000
+      targetPort: 8001
     - name: metrics
       protocol: TCP
       port: 9000
