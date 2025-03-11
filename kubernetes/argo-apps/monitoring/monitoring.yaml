@@ -12,26 +12,26 @@ spec:
     chart: prometheus
     repoURL: https://prometheus-community.github.io/helm-charts
     targetRevision: 27.5.1
-    helm:
-      values: |
-        extraScrapeConfigs: |
-        - job_name: 'prometheus-blackbox-exporter'
-          metrics_path: /probe
-          params:
-            module: [http_2xx]
-          static_configs:
-            - targets:
-              - http://main-api.main-api.svc.cluster.local:9000/metrics
-          relabel_configs:
-            - source_labels: [__address__]
-              target_label: __param_target
-            - target_label: __address__
-              replacement: blackbox-exporter-prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
-            - source_labels: [__param_target]
-              target_label: instance
-        server:
-          remoteWrite:
-            - url: "http://victoria-metrics-victoria-metrics-single-server:8428/api/v1/write"
+    # helm:
+    #   values: |
+    #     extraScrapeConfigs: |
+    #     - job_name: 'prometheus-blackbox-exporter'
+    #       metrics_path: /probe
+    #       params:
+    #         module: [http_2xx]
+    #       static_configs:
+    #         - targets:
+    #           - http://main-api.main-api.svc.cluster.local:9000/metrics
+    #       relabel_configs:
+    #         - source_labels: [__address__]
+    #           target_label: __param_target
+    #         - target_label: __address__
+    #           replacement: blackbox-exporter-prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+    #         - source_labels: [__param_target]
+    #           target_label: instance
+    #     server:
+    #       remoteWrite:
+    #         - url: "http://victoria-metrics-victoria-metrics-single-server:8428/api/v1/write"
   syncPolicy:
     automated:
       prune: true
