@@ -106,6 +106,8 @@ ssh-keygen -t rsa -b 4096 -C "argo-cd" -f ~/.ssh/argocd
 
 #### **Step 3: Add the GitHub Repository to Argo CD**
 ```sh
+argocd login localhost:8080 --username admin --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
 argocd repo add git@github.com:your-username/your-repository.git \
   --ssh-private-key-path ~/.ssh/argocd
 ```
