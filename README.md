@@ -1,3 +1,29 @@
+# Kantox Challenge - DevOps
+
+## 📌 Introduction
+
+This project is part of a **technical challenge** for a **Cloud Engineer / DevOps** position.  
+The application is designed to run in a **local Kubernetes environment** using **Minikube**.
+
+---
+
+## 🚀 Prerequisites
+
+To run this project in a local environment, you need an **AWS account**,  
+which will be used for **deploying the infrastructure with Terraform** and  
+for **storing the Docker images** created by the pipeline.
+
+Additionally, install the following tools:
+
+- [Minikube](https://minikube.sigs.k8s.io/docs/)
+- [Argo CD](https://argo-cd.readthedocs.io/)
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [Helm](https://helm.sh/)
+- [Docker](https://docs.docker.com/get-docker/)
+- [Terraform](https://developer.hashicorp.com/terraform/downloads)
+
+---
+
 # **🏗 Local Environment Setup**
 The process to set up the local environment consists of the following steps:
 
