@@ -106,3 +106,10 @@ and the infrastructure can be monitored with **Grafana and Prometheus**.
 curl http://localhost:8085/buckets
 ```
 ✅ **This verifies that the API responds correctly with AWS resources.**
+
+--- 
+
+## **Evidence**
+You can found some evidence about enviroment deployed and working following the next link.
+
+🔗 **[Evidence pictures](evidence/)** 
