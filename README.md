@@ -99,7 +99,7 @@ argocd repo add git@github.com:your-username/your-repository.git \
 Once the services are deployed, API tests can be performed using **cURL**,  
 and the infrastructure can be monitored with **Grafana and Prometheus**.
 
-🔗 **[Testing and monitoring guide in `kubernetes/README.md`](kubernetes/README.md)**  
+🔗 **[Testing and monitoring guide in `documents/test-and-monitoring.md`](documents/test-and-monitoring.md)**  
 
 ### **Example: API Test**
 ```sh
