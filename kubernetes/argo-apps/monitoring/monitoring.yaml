@@ -128,7 +128,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: default
+    namespace: monitoring
     server: https://kubernetes.default.svc
   project: monitoring
   source:
