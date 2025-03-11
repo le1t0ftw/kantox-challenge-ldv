@@ -37,7 +37,7 @@ The process to set up the local environment consists of the following steps:
 ## **1️⃣ Installing and Configuring Minikube**
 To run the local environment, **Minikube** and additional components need to be installed and configured.  
 
-🔗 **[See the full guide](#installing-and-configuring-minikube)**  
+🔗 **[See the full guide](documents/minikube.md)**  
 
 ### **Summary of Steps:**
 ```sh
@@ -71,7 +71,7 @@ Once the infrastructure is deployed, services are managed and deployed using:
 - **GitHub Actions (CI/CD)**
 - **Argo CD (Kubernetes GitOps)**
 
-🔗 **[Full guide in `kubernetes/README.md`](kubernetes/README.md)**  
+🔗 **[Full guide in `documents/argocd.md`](documents/argocd.md)**  
 
 ### **Summary of Steps:**
 #### **Deploy Argo CD**

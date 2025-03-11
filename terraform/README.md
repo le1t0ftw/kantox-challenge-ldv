@@ -1,3 +1,34 @@
+
+## 🌍 Terraform Infrastructure Deployment
+
+Before deploying applications in Kubernetes, deploy the **AWS infrastructure**  
+using **Terraform**. The **Terraform state file** will be **stored locally** for this challenge.
+
+### **📌 Infrastructure Overview**
+| AWS Service | Purpose |
+|-------------|---------|
+| **S3 Bucket** | Stores static files and logs. |
+| **IAM Role & Policies** | Grants permissions to services. |
+| **Parameter Store** | Securely stores app configuration values. |
+
+### **1️⃣ Initialize Terraform**
+```sh
+cd terraform
+terraform init
+```
+
+### **2️⃣ Plan Deployment**
+```sh
+terraform plan
+```
+Shows the **AWS resources** that will be created.
+
+### **3️⃣ Apply Deployment**
+```sh
+terraform apply -auto-approve
+```
+This will deploy the **S3 bucket, IAM roles, and Parameter Store settings**.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
