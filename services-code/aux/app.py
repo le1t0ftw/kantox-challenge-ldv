@@ -20,10 +20,10 @@ def list_buckets():
         "version": SERVICE_VERSION,
     }
 
-
+# comment
 @app.get("/parameters")
 def list_parameters():
-    params = ssm_client.describe_parameters()#
+    params = ssm_client.describe_parameters()
     return {
         "parameters": [p["Name"] for p in params["Parameters"]],
         "version": SERVICE_VERSION,
