@@ -5,12 +5,12 @@ output "s3_bucket" {
 
 output "ssm_parameter_arn" {
   description = "The ARN of the created AWS SSM Parameter."
-  value       = aws_ssm_parameter.this.arn
+  value       = module.parameter_store.ssm_parameter_arn
 }
 
 output "ssm_parameter_name" {
   description = "The name of the created AWS SSM Parameter."
-  value       = aws_ssm_parameter.this.name
+  value       = module.parameter_store.ssm_parameter_name
 }
 
 output "iam_role" {

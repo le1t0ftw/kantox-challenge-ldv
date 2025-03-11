@@ -9,14 +9,16 @@ minikube start --memory=4g --cpus=2
 Minikube **does not support ServiceAccounts with AWS**, so we need to enable  
 the **`registry-creds` plugin** for authentication with **Amazon ECR**.
 
+#### Configure the plugin:
+```sh
+minikube addons configure registry-creds
+
 #### Enable the plugin:
 ```sh
 minikube addons enable registry-creds
 ```
 
-#### Configure the plugin:
-```sh
-minikube addons configure registry-creds
+
 ```
 
 During the setup, select **AWS** and enter:
@@ -24,6 +26,7 @@ During the setup, select **AWS** and enter:
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_ACCOUNT_ID`
+- `REGION`
 
 #### Verify Configuration:
 ```sh
