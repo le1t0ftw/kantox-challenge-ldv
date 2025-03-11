@@ -178,7 +178,7 @@ jobs:
           kind: Secret
           metadata:
             name: aws-secret
-            namespace: default
+            namespace: auxiliary-service
           type: Opaque
           data:
             AWS_ACCESS_KEY_ID: $(echo -n "${{ secrets.AWS_ACCESS_KEY_ID }}" | base64)
