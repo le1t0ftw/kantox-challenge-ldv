@@ -1,7 +1,7 @@
 ## ⚙️ CI/CD Pipeline - GitHub Actions
 
 ### **📌 Configuration**
-Before running the pipeline, create a **fork** of this repository and set  
+Before running the pipeline, you must set  
 the following **GitHub Actions secrets**:
 
 | Secret Name | Purpose |
