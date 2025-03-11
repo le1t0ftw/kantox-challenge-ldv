@@ -5,8 +5,8 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - 'services-code/**'
+    paths:
+      - 'services-code/**'
 
 
 permissions:
@@ -169,6 +169,21 @@ jobs:
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
           sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/services/auxiliary-service/auxiliary-service-deployment.yaml
+
+      - name: Update AWS credentials in aws-secret.yaml
+        if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
+        run: |
+          cat <<EOF > ./kubernetes/services/auxiliary-service/aws-secret.yaml
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: aws-secret
+            namespace: default
+          type: Opaque
+          data:
+            AWS_ACCESS_KEY_ID: $(echo -n "${{ secrets.AWS_ACCESS_KEY_ID }}" | base64)
+            AWS_SECRET_ACCESS_KEY: $(echo -n "${{ secrets.AWS_SECRET_ACCESS_KEY }}" | base64)
+          EOF
 
       - name: Commit and push changes
         if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
