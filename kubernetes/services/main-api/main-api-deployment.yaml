@@ -19,7 +19,7 @@ spec:
       - name: main-api
         image: 058264106614.dkr.ecr.us-east-1.amazonaws.com/main-api:5e832f7
         ports:
-        - containerPort: 8001
+        - containerPort: 8085
         - containerPort: 9000
         envFrom:
         - configMapRef:
