@@ -2,18 +2,18 @@
 
 This guide explains how to **test the API** using `cURL`.
 
-The main-api must be exposed on port 8001 before testing.
+The main-api must be exposed on port 8085 before testing.
 
 Expose the main-api:
 Run the following command to expose the main-api service:
 ```sh
-kubectl port-forward svc/main-api -n main-api 8001:80
+kubectl port-forward svc/main-api -n main-api 8085:80
 ```
-This forwards port 8001 on your local machine to the main-api running in Kubernetes.
+This forwards port 8085 on your local machine to the main-api running in Kubernetes.
 
 ### **1️⃣ Get Available S3 Buckets**
 ```sh
-curl http://localhost:8001/buckets
+curl http://localhost:8085/buckets
 ```
 #### **✅ Expected Response**
 ```json
@@ -28,7 +28,7 @@ curl http://localhost:8001/buckets
 
 ### **2️⃣ Get AWS Parameter Store Entries**
 ```sh
-curl http://localhost:8001/parameters
+curl http://localhost:8085/parameters
 ```
 #### **✅ Expected Response**
 ```json
@@ -43,7 +43,7 @@ curl http://localhost:8001/parameters
 
 ### **3️⃣ Get a Specific Parameter's Value**
 ```sh
-curl http://localhost:8001/parameter/prueba-ldv
+curl http://localhost:8085/parameter/prueba-ldv
 ```
 #### **✅ Expected Response**
 ```json
@@ -67,7 +67,7 @@ If an incorrect **bucket or parameter name** is used, expect:
 
 #### **❌ Example Failed Request**
 ```sh
-curl http://localhost:8001/parameter/nonexistent-param
+curl http://localhost:8085/parameter/nonexistent-param
 ```
 #### **❌ Expected Response**
 ```json

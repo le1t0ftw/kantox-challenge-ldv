@@ -31,7 +31,7 @@ def list_parameters():
     }
 
 
-@app.get("/parameter/{name}")
+@app.get("/parameters/{name}")
 def get_parameter(name: str):
     response = ssm_client.get_parameter(Name=name, WithDecryption=True)
     return {
