@@ -20,6 +20,7 @@ def list_buckets():
         "version": SERVICE_VERSION,
     }
 
+
 # comment
 @app.get("/parameters")
 def list_parameters():
