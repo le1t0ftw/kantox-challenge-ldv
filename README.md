@@ -103,6 +103,6 @@ and the infrastructure can be monitored with **Grafana and Prometheus**.
 
 ### **Example: API Test**
 ```sh
-curl http://localhost:8000/buckets
+curl http://localhost:8085/buckets
 ```
 ✅ **This verifies that the API responds correctly with AWS resources.**
