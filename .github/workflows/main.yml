@@ -5,8 +5,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'services-code/**'
+    # paths:
+    #   - 'services-code/**'
 
 
 permissions:
