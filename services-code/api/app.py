@@ -9,7 +9,6 @@ SERVICE_VERSION = os.getenv("SERVICE_VERSION", "1.0.0")
 Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
 
-# COMMENT
 @app.get("/buckets")
 def list_buckets():
     response = requests.get(f"{AUX_SERVICE_URL}/buckets")
