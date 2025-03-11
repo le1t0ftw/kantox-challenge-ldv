@@ -59,14 +59,16 @@ No resources.
 | <a name="input_app_iam_config"></a> [app\_iam\_config](#input\_app\_iam\_config) | Configuration map for IAM role and policy | `map(any)` | n/a | yes |
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Nombre del bucket S3 | `string` | n/a | yes |
 | <a name="input_git_iam_config"></a> [git\_iam\_config](#input\_git\_iam\_config) | Configuration map for IAM role and policy | `map(any)` | n/a | yes |
-| <a name="input_param_name"></a> [param\_name](#input\_param\_name) | Nombre del parámetro | `string` | n/a | yes |
-| <a name="input_param_value"></a> [param\_value](#input\_param\_value) | Valor del parámetro | `string` | n/a | yes |
+| <a name="input_param_name"></a> [param\_name](#input\_param\_name) | The name of the AWS SSM Parameter Store entry. | `string` | n/a | yes |
+| <a name="input_param_value"></a> [param\_value](#input\_param\_value) | The value assigned to the AWS SSM Parameter Store entry. | `string` | n/a | yes |
+| <a name="input_param_type"></a> [param\_type](#input\_param\_type) | The type of the AWS SSM Parameter Store entry (String, StringList, or SecureString). | `string` | `"String"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_iam_role"></a> [iam\_role](#output\_iam\_role) | ARN del rol IAM |
-| <a name="output_parameter_name"></a> [parameter\_name](#output\_parameter\_name) | Nombre del parámetro en AWS Parameter Store |
-| <a name="output_s3_bucket"></a> [s3\_bucket](#output\_s3\_bucket) | Nombre del bucket S3 |
+| <a name="output_iam_role"></a> [iam\_role](#output\_iam\_role) | ARN of the IAM role assigned to the application |
+| <a name="output_s3_bucket"></a> [s3\_bucket](#output\_s3\_bucket) | ARN of the provisioned S3 bucket |
+| <a name="output_ssm_parameter_arn"></a> [ssm\_parameter\_arn](#output\_ssm\_parameter\_arn) | The ARN of the created AWS SSM Parameter. |
+| <a name="output_ssm_parameter_name"></a> [ssm\_parameter\_name](#output\_ssm\_parameter\_name) | The name of the created AWS SSM Parameter. |
 <!-- END_TF_DOCS -->
