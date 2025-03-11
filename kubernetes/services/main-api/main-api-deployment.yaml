@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: main-api
-        image: 058264106614.dkr.ecr.us-east-1.amazonaws.com/main-api:45a42a4
+        image: 058264106614.dkr.ecr.us-east-1.amazonaws.com/main-api:5e832f7
         ports:
         - containerPort: 8001
         - containerPort: 9000
