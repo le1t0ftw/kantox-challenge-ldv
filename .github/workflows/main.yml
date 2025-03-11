@@ -98,7 +98,7 @@ jobs:
       - name: Bump version in configmap.yaml
         if: steps.changes.outputs.api == 'true' || env.REPO_CREATED == 'true'
         run: |
-          VERSION_FILE="./kubernetes/services/auxiliary-service/configmap.yaml"
+          VERSION_FILE="./kubernetes/services/main-api/configmap.yaml"
 
           # Obtener la versión actual del ConfigMap
           CURRENT_VERSION=$(grep -oP '(?<=SERVICE_VERSION: ")[0-9]+\.[0-9]+\.[0-9]+' $VERSION_FILE)
@@ -193,7 +193,7 @@ jobs:
       - name: Bump version in configmap.yaml
         if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
         run: |
-          VERSION_FILE="./kubernetes/services/main-api/configmap.yaml"
+          VERSION_FILE="./kubernetes/services/auxiliary-service/configmap.yaml"
 
           # Obtener la versión actual del ConfigMap
           CURRENT_VERSION=$(grep -oP '(?<=SERVICE_VERSION: ")[0-9]+\.[0-9]+\.[0-9]+' $VERSION_FILE)
