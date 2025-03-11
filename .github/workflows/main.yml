@@ -170,6 +170,27 @@ jobs:
           SHORT_SHA=${GITHUB_SHA::7}
           sed -i "s|image:.*|image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/auxiliary-service:$SHORT_SHA|g" ./kubernetes/services/auxiliary-service/auxiliary-service-deployment.yaml
 
+      - name: Bump version in configmap.yaml
+        if: steps.changes.outputs.api == 'true' || env.REPO_CREATED == 'true'
+        run: |
+          VERSION_FILE="./kubernetes/services/main-api/configmap.yaml"
+
+          # Obtener la versión actual del ConfigMap
+          CURRENT_VERSION=$(grep -oP '(?<=SERVICE_VERSION: ")[0-9]+\.[0-9]+\.[0-9]+' $VERSION_FILE)
+
+          # Dividir la versión en Major, Minor y Patch
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+          PATCH=$((VERSION_PARTS[2] + 1))
+
+          # Construir la nueva versión
+          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$PATCH"
+
+          # Reemplazar la versión en el archivo configmap.yaml
+          sed -i "s/SERVICE_VERSION: \".*\"/SERVICE_VERSION: \"$NEW_VERSION\"/" $VERSION_FILE
+
+          echo "Nueva versión: $NEW_VERSION"
+
+
       - name: Update AWS credentials in aws-secret.yaml
         if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
         run: |
@@ -184,6 +205,27 @@ jobs:
             AWS_ACCESS_KEY_ID: $(echo -n "${{ secrets.AWS_ACCESS_KEY_ID }}" | base64)
             AWS_SECRET_ACCESS_KEY: $(echo -n "${{ secrets.AWS_SECRET_ACCESS_KEY }}" | base64)
           EOF
+
+      - name: Bump version in configmap.yaml
+        if: steps.changes.outputs.api == 'true' || env.REPO_CREATED == 'true'
+        run: |
+          VERSION_FILE="./kubernetes/services/auxiliary-service/configmap.yaml"
+
+          # Obtener la versión actual del ConfigMap
+          CURRENT_VERSION=$(grep -oP '(?<=SERVICE_VERSION: ")[0-9]+\.[0-9]+\.[0-9]+' $VERSION_FILE)
+
+          # Dividir la versión en Major, Minor y Patch
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+          PATCH=$((VERSION_PARTS[2] + 1))
+
+          # Construir la nueva versión
+          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$PATCH"
+
+          # Reemplazar la versión en el archivo configmap.yaml
+          sed -i "s/SERVICE_VERSION: \".*\"/SERVICE_VERSION: \"$NEW_VERSION\"/" $VERSION_FILE
+
+          echo "Nueva versión: $NEW_VERSION"
+
 
       - name: Commit and push changes
         if: steps.changes.outputs.aux == 'true' || env.REPO_CREATED == 'true'
