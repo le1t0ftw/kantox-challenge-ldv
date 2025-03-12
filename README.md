@@ -74,7 +74,8 @@ terraform apply -auto-approve
 ---
 
 ## **3️⃣ Deploying Services with CI/CD and Argo CD**
-Once the infrastructure is deployed, services are managed and deployed using:  
+Once the infrastructure is deployed you must run github workflow for the first time. This allow to create docker images and ecr repositories.
+Services are managed and deployed using:  
 - **GitHub Actions (CI/CD)**
 - **Argo CD (Kubernetes GitOps)**
 
