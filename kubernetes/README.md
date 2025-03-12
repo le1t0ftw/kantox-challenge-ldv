@@ -108,7 +108,7 @@ ssh-keygen -t rsa -b 4096 -C "argo-cd" -f ~/.ssh/argocd
 ```sh
 argocd login localhost:8080 --username admin --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
-argocd repo add git@github.com:your-username/your-repository.git \
+argocd repo add git@github.com:le1t0ftw/kantox-challenge-ldv.git \
   --ssh-private-key-path ~/.ssh/argocd
 ```
 - This tells Argo CD to **authenticate with GitHub** using the SSH key.
