@@ -12,18 +12,6 @@ the following **GitHub Actions secrets**:
 
 **Path:** `Settings > Secrets and variables > Actions`
 
----
-
-### **📌 Pipeline Structure**
-```sh
-/
-|-- main-api/               # Microservice: main API
-|-- auxiliary-service/      # Microservice: auxiliary service
-|-- k8s/                    # Kubernetes manifests
-|-- terraform/              # Infrastructure as code
-|-- .github/workflows/      # GitHub Actions workflows
-|-- README.md               # Documentation
-```
 
 ### **📌 CI/CD Steps**
 1️⃣ **Validate Code**  
